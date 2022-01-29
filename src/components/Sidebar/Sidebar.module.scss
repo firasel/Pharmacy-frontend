@@ -2,6 +2,35 @@
   .sidebarElement {
     position: relative;
     width: 100%;
+    background: none;
+    z-index: 10;
+
+    ::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #cffffd;
+      z-index: -10;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: all 0.1s;
+    }
+
+    :hover {
+      ::before {
+        transform: scaleX(1);
+        transition: all 0.3s;
+      }
+      opacity: 1 !important;
+      color: #37c3e9;
+      span {
+        color: #37c3e9;
+      }
+    }
+
     > div {
       cursor: pointer;
       padding-top: 1rem;
@@ -12,66 +41,141 @@
       align-items: flex-end;
       gap: 0.5rem;
       opacity: 0.8;
-      > span:nth-child(1) {
-        width: 20px !important;
-        height: 20px !important;
-        overflow: hidden;
-        z-index: 11;
+      svg {
+        width: 20px;
+        height: 20px;
       }
-      img {
-        background: none !important;
-      }
-      span:nth-child(2) {
+      span {
         font-weight: 600;
         line-height: 1rem;
         font-size: 1rem;
         color: #313131;
         font-family: "Lato";
-        z-index: 10;
       }
-    }
-
-    ::before {
-      content: "";
-      width: 97%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: #cffffd;
-      z-index: -1;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: all 0.2s;
-    }
-
-    :hover {
-      ::before {
-        transform: scaleX(1);
-        transition: all 0.4s;
-      }
-      background: #68dfff;
     }
   }
 
   .active {
+    > div {
+      opacity: 1 !important;
+      color: #37c3e9;
+      span {
+        color: #37c3e9;
+      }
+    }
+  }
+
+  .childElement {
+    position: relative;
+    width: 100%;
+    background: none;
+    z-index: 10;
+
     ::before {
       content: "";
-      width: 97%;
+      width: 100%;
       height: 100%;
       position: absolute;
       top: 0;
       left: 0;
       background: #cffffd;
+      z-index: -10;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: all 0.2s;
+    }
+    ::after {
+      content: "";
+      width: 5px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #68dfff;
       z-index: -1;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: all 0.2s;
+    }
+
+    :hover {
+      ::after {
+        transform: scaleX(1);
+        transition: all 0.4s;
+      }
+      ::before {
+        transform: scaleX(1);
+        transition: all 0.4s;
+      }
+      opacity: 1 !important;
+      color: #37c3e9;
+      span {
+        color: #37c3e9;
+      }
+    }
+    > div {
+      cursor: pointer;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 1.75rem;
+      padding-right: 1rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      opacity: 0.8;
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+      span {
+        font-weight: 600;
+        line-height: 1rem;
+        font-size: 1rem;
+        color: #313131;
+        font-family: "Lato";
+      }
+    }
+  }
+
+  .activeChild {
+    ::before {
+      content: "";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #cffffd;
+      z-index: -10;
       transform: scaleX(1);
       transform-origin: left;
       transition: all 0.2s;
     }
-    background: #68dfff;
-
+    ::after {
+      content: "";
+      width: 5px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #68dfff;
+      z-index: -1;
+      transform: scaleX(1);
+      transform-origin: right;
+      transition: all 0.2s;
+    }
     > div {
       opacity: 1 !important;
+      color: #37c3e9;
+      span {
+        color: #37c3e9;
+      }
+    }
+  }
+
+  .subMenuElement {
+    > div > span {
+      padding-left: 26px;
     }
   }
 
@@ -79,9 +183,11 @@
     display: none;
   }
   .subMenuActive {
-    transform-origin: top;
     display: block !important;
     animation-name: subMenuAnimation;
     animation-duration: 0.3s;
+    transform-origin: top;
+    background: #edfffe;
+    border-radius: 8px;
   }
 }

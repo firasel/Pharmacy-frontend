@@ -1,16 +1,20 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import analyticsIcon from "../../assets/icons/Analytics.svg";
-import clientsIcon from "../../assets/icons/clients.svg";
-import dashboardIcon from "../../assets/icons/home.svg";
-import invoiceIcon from "../../assets/icons/invoice.svg";
+import {
+  AiOutlineFileText,
+  AiOutlineHome,
+  AiOutlineUser
+} from "react-icons/ai";
+import { BiChevronDown } from "react-icons/bi";
+import { BsGraphUp } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
 import logoImg from "../../assets/icons/logo.svg";
-import signOutIcon from "../../assets/icons/signOut.svg";
 import style from "./Sidebar.module.scss";
 import subMenuFunction from "./subMenuFunction";
 
 const Sidebar = () => {
   const [expandKey, setExpandKey] = useState(1);
+  const [activeItem, setActiveItem] = useState(1);
 
   return (
     <div className={`h-screen bg-white pb-4 w-max ${style.sidebarRoot}`}>
@@ -25,45 +29,64 @@ const Sidebar = () => {
           {/* Items start */}
           <div className="sidebarElement">
             <div>
-              <Image src={dashboardIcon} />
+              <AiOutlineHome />
               <span>Dashboard</span>
             </div>
           </div>
-          <div className="sidebarElement active">
+          <div className="sidebarElement">
             <div>
-              <Image src={clientsIcon} />
+              <AiOutlineUser />
               <span>Products</span>
             </div>
           </div>
 
           <div
-            className={`sidebarElement ${expandKey===1 && 'active' }`} 
-            onClick={()=>subMenuFunction([expandKey, setExpandKey],1)}
+            className={`sidebarElement ${expandKey === 1 && "active"}`}
+            onClick={() => subMenuFunction([expandKey, setExpandKey], 1)}
           >
-            <div>
-              <Image src={invoiceIcon} />
-              <span>Invoices</span>
+            <div className="flex justify-between">
+              <div className="flex items-center gap-2">
+                <AiOutlineFileText />
+                <span>Invoices</span>
+              </div>
+              <BiChevronDown
+                className={`w-7 h-7 ${
+                  expandKey === 1 && "rotate-[-180deg]"
+                } transition-all duration-150`}
+              />
             </div>
           </div>
 
           <div
             className={`w-full subMenu ${expandKey === 1 && "subMenuActive"}`}
           >
-            <div className="sidebarElement">
+            <div
+              className={`childElement subMenuElement ${
+                activeItem === 1 && "activeChild"
+              }`}
+              onClick={() => setActiveItem(1)}
+            >
               <div>
-                <Image src={invoiceIcon} />
                 <span>1 Invoices</span>
               </div>
             </div>
-            <div className="sidebarElement">
+            <div
+              className={`childElement subMenuElement ${
+                activeItem === 2 && "activeChild"
+              }`}
+              onClick={() => setActiveItem(2)}
+            >
               <div>
-                <Image src={invoiceIcon} />
                 <span>2 Invoices</span>
               </div>
             </div>
-            <div className="sidebarElement">
+            <div
+              className={`childElement subMenuElement ${
+                activeItem === 3 && "activeChild"
+              }`}
+              onClick={() => setActiveItem(3)}
+            >
               <div>
-                <Image src={invoiceIcon} />
                 <span>3 Invoices</span>
               </div>
             </div>
@@ -71,13 +94,13 @@ const Sidebar = () => {
 
           <div className="sidebarElement">
             <div>
-              <Image src={analyticsIcon} />
+              <BsGraphUp />
               <span>Analytics</span>
             </div>
           </div>
           <div className="sidebarElement">
             <div>
-              <Image src={signOutIcon} />
+              <FiLogOut />
               <span>SignOut</span>
             </div>
           </div>
