@@ -1,0 +1,77 @@
+.sidebarRoot :global {
+  .sidebarElement {
+    position: relative;
+    width: 100%;
+    > div {
+      cursor: pointer;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 1.75rem;
+      padding-right: 1rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5rem;
+      opacity: 0.8;
+      > span:nth-child(1) {
+        width: 20px !important;
+        height: 20px !important;
+        overflow: hidden;
+        z-index: 11;
+        ::after {
+          transform: scaleX(0) !important;
+        }
+      }
+      span:nth-child(2) {
+        font-weight: 600;
+        line-height: 1rem;
+        font-size: 1rem;
+        color: #313131;
+        font-family: "Lato";
+        z-index: 10;
+      }
+    }
+
+    ::before {
+      content: "";
+      width: 97%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #cffffd;
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: all 0.2s;
+    }
+
+    :hover {
+      ::before {
+        transform: scaleX(1);
+        transition: all 0.4s;
+      }
+      background: #68dfff;
+    }
+  }
+
+  .active {
+    ::before {
+      content: "";
+      width: 97%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #cffffd;
+      z-index: -1;
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: all 0.2s;
+    }
+    background: #68dfff;
+
+    > div {
+      opacity: 1 !important;
+    }
+  }
+}

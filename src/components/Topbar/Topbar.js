@@ -6,38 +6,31 @@ import doctorImg from "../../assets/images/doctor.jpg";
 
 const Topbar = () => {
   return (
-    <div className="w-100 overflow-hidden bg-white border-b-2 border-gray-500 py-3">
-     <div className="container m-auto">
-     <div className="flex justify-between">
-        <div className="flex items-center gap-4">
-            <div>
-                <span className="text-2xl font-[Poppins]">Pharmacy</span>
-            </div>
-            <div>
-                <span className="text-2xl font-[Poppins]">Dashboard</span>
-            </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-12 h-12 flex items-center justify-center bg-[#CFFFFD] rounded-lg">
-            <Image width={23} height={23} src={notificationIcon} />
-          </div>
+    <div className="w-full h-min overflow-hidden bg-white py-3">
+      <div className="px-5">
+        <div className="flex justify-between items-center">
+          <span className="text-2xl font-[Poppins]">Dashboard</span>
           <div className="flex items-center gap-2">
-            <div className="border-[#CFFFFD] border-[3px] rounded-full w-12 h-12 p-[3px] overflow-hidden cursor-pointer">
-              <Image
-                width={48}
-                height={48}
-                className="rounded-full"
-                src={doctorImg}
-              />
+            <div className="w-12 h-12 flex items-center justify-center bg-[#CFFFFD] rounded-lg">
+              <Image width={23} height={23} src={notificationIcon} />
             </div>
-            <div className="flex items-center gap-[2px] cursor-pointer">
-              <span>Md Rasel</span>
-              <Image width={20} height={20} src={dropdownIcon} />
+            <div className="flex items-center gap-2">
+              <div className="border-[#CFFFFD] border-[3px] rounded-full w-12 h-12 p-[3px] overflow-hidden cursor-pointer">
+                <Image
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                  src={doctorImg}
+                />
+              </div>
+              <div className="flex items-center gap-[2px] cursor-pointer">
+                <span>Md Rasel</span>
+                <Image width={20} height={20} src={dropdownIcon} />
+              </div>
             </div>
           </div>
         </div>
       </div>
-     </div>
     </div>
   );
 };
