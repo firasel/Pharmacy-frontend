@@ -5,11 +5,15 @@ import Topbar from "../../components/Topbar/Topbar";
 const index = () => {
   return (
     <div className="bg-[#FBFBFB]">
-      <div className="relative flex">
+      <div className="flex w-full">
         <Sidebar />
         <div className="w-full">
-          <Topbar />
-          <div className="w-full bg-[#FBFBFB]">This is main page</div>
+          <Topbar/>
+          <div className="w-full h-[200%] bg-[#FBFBFB]">
+            <span>
+            This is main page
+            </span>
+          </div>
         </div>
       </div>
     </div>

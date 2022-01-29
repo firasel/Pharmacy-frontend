@@ -17,9 +17,9 @@
         height: 20px !important;
         overflow: hidden;
         z-index: 11;
-        ::after {
-          transform: scaleX(0) !important;
-        }
+      }
+      img {
+        background: none !important;
       }
       span:nth-child(2) {
         font-weight: 600;
@@ -73,5 +73,15 @@
     > div {
       opacity: 1 !important;
     }
+  }
+
+  .subMenu {
+    display: none;
+  }
+  .subMenuActive {
+    transform-origin: top;
+    display: block !important;
+    animation-name: subMenuAnimation;
+    animation-duration: 0.3s;
   }
 }
