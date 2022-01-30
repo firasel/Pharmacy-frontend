@@ -9,7 +9,7 @@ const Topbar = () => {
     <div className="w-full h-min overflow-hidden bg-white py-3 sticky top-0">
       <div className="px-5 relative">
         <div className="flex justify-between items-center">
-          <span className="text-2xl font-[Poppins]">Dashboard</span>
+          <span className="text-2xl font-[Poppins]">KD Pharmacy</span>
           <div className="flex items-center gap-2">
             <div className="w-12 h-12 flex items-center justify-center bg-[#CFFFFD] rounded-lg">
               <Image width={23} height={23} src={notificationIcon} />

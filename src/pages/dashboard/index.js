@@ -1,4 +1,5 @@
 import React from "react";
+import DashboardHome from "../../components/DashboardHome/DashboardHome";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Topbar from "../../components/Topbar/Topbar";
 
@@ -8,12 +9,8 @@ const index = () => {
       <div className="flex w-full">
         <Sidebar />
         <div className="w-full">
-          <Topbar/>
-          <div className="w-full h-[200%] bg-[#FBFBFB]">
-            <span>
-            This is main page
-            </span>
-          </div>
+          <Topbar />
+          <DashboardHome />
         </div>
       </div>
     </div>

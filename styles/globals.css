@@ -12,3 +12,8 @@
     transform: scaleY(1);
   }
 }
+@layer components {
+  .pageStyle {
+    @apply w-full px-5 py-5;
+  }
+}

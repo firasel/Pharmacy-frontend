@@ -21,7 +21,7 @@ const Sidebar = () => {
       <div className="w-44 relative">
         <div className="fixed w-44">
           {/* Logo start */}
-          <div className="w-100 logo flex items-center justify-center gap-2 py-5 border-b-2">
+          <div className="w-100 logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200">
             <Image src={logoImg} />
             <span className="font-semibold font-[Poppins]">Pharmacy</span>
           </div>
