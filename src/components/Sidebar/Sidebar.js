@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
   AiOutlineFileText,
@@ -15,6 +16,7 @@ import subMenuFunction from "./subMenuFunction";
 const Sidebar = () => {
   const [expandKey, setExpandKey] = useState(1);
   const [activeItem, setActiveItem] = useState(1);
+  const router = useRouter();
 
   return (
     <div className={`h-screen bg-white pb-4 w-max ${style.sidebarRoot}`}>
@@ -64,7 +66,10 @@ const Sidebar = () => {
               className={`childElement subMenuElement ${
                 activeItem === 1 && "activeChild"
               }`}
-              onClick={() => setActiveItem(1)}
+              onClick={() => {
+                setActiveItem(1);
+                router.push("/dashboard");
+              }}
             >
               <div>
                 <span>1 Invoices</span>
@@ -74,7 +79,10 @@ const Sidebar = () => {
               className={`childElement subMenuElement ${
                 activeItem === 2 && "activeChild"
               }`}
-              onClick={() => setActiveItem(2)}
+              onClick={() => {
+                setActiveItem(2);
+                router.push("/dashboard/sales");
+              }}
             >
               <div>
                 <span>2 Invoices</span>
@@ -84,7 +92,10 @@ const Sidebar = () => {
               className={`childElement subMenuElement ${
                 activeItem === 3 && "activeChild"
               }`}
-              onClick={() => setActiveItem(3)}
+              onClick={() => {
+                setActiveItem(3);
+                router.push("/dashboard/sales23");
+              }}
             >
               <div>
                 <span>3 Invoices</span>

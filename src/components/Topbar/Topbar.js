@@ -6,7 +6,7 @@ import doctorImg from "../../assets/images/doctor.jpg";
 
 const Topbar = () => {
   return (
-    <div className="w-full h-min overflow-hidden bg-white py-3 sticky top-0">
+    <div className="w-full h-min overflow-hidden bg-white py-3 sticky top-0 z-10">
       <div className="px-5 relative">
         <div className="flex justify-between items-center">
           <span className="text-2xl font-[Poppins]">KD Pharmacy</span>
