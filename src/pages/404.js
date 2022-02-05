@@ -1,5 +1,4 @@
 import React from "react";
-import ErrorPageLayout from "../layouts/ErrorPageLayout/ErrorPageLayout";
 
 const Custome404 = () => {
   return (
@@ -13,6 +12,6 @@ const Custome404 = () => {
   );
 };
 
-Custome404.Layout = ErrorPageLayout;
+Custome404.Layout = SimplePageLayout;
 
 export default Custome404;
