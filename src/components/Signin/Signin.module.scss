@@ -12,6 +12,35 @@
   --light: #bbc1e1;
   --red: #c73b47;
 
+  .signinPage {
+    width: 100%;
+    height: 100%;
+    min-height: 10vh;
+    position: relative;
+    &::before {
+      content: "";
+      width: 0%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #2b8cda;
+      z-index: 15;
+      animation: 2s signinVisitAnimation;
+    }
+    &::after {
+      content: "";
+      width: 0%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: #2b8cda;
+      z-index: 15;
+      animation: 2s signinVisitAnimation;
+    }
+  }
+
   .login-form {
     h1 {
       margin: 0 0 2rem 0;
@@ -138,6 +167,27 @@
       }
       label {
         color: var(--red) !important;
+      }
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+
+      div {
+        width: 0.5rem;
+        height: 0.5rem;
+        margin: 0.65rem 0.3rem 0.35rem 0.3rem;
+        background: white;
+        border-radius: 50%;
+        animation: 0.5s bounce infinite alternate;
+
+        &:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: 0.4s;
+        }
       }
     }
   }

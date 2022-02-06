@@ -17,3 +17,19 @@
     @apply w-full px-5 py-5;
   }
 }
+
+@keyframes bounce {
+  to {
+    opacity: 0.4;
+    transform: translate3d(0, -0.5rem, 0);
+  }
+}
+
+@keyframes signinVisitAnimation {
+  0% {
+    width: 50%;
+  }
+  100% {
+    width: 0%;
+  }
+}

@@ -1,9 +1,13 @@
 import React from "react";
-import Signup from "../components/Signin/Signin";
+import Signin from "../components/Signin/Signin";
 import SimplePageLayout from "../layouts/SimplePageLayout/SimplePageLayout";
 
 const signin = () => {
-  return <Signup />;
+  return (
+    <>
+      <Signin />
+    </>
+  );
 };
 
 signin.Layout = SimplePageLayout;
