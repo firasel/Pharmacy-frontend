@@ -1,9 +1,13 @@
 import React from "react";
 import Signup from "../components/Signup/Signup";
-import SimplePageLayout from "../layouts/SimplePageLayout/ErrorPageLayout";
+import SimplePageLayout from "../layouts/SimplePageLayout/SimplePageLayout";
 
 const signup = () => {
-  return <Signup />;
+  return (
+    <>
+      <Signup />
+    </>
+  );
 };
 
 signup.Layout = SimplePageLayout;

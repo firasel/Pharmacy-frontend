@@ -1,4 +1,5 @@
 import React from "react";
+import SimplePageLayout from "../layouts/SimplePageLayout/SimplePageLayout";
 
 const Custome404 = () => {
   return (
