@@ -1,16 +1,45 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import API from '../../api/AxiosInstance';
-import vectorSvg from "../../assets/images/vectorSignin.svg";
+import API from "../../api/AxiosInstance";
+import loadingVectorSvg from "../../assets/images/catVector.svg";
+import initialVectorSvg from "../../assets/images/vectorSignin.svg";
 import style from "./Signin.module.scss";
 
 const Signin = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const variants = {
+    hiddenLeft: {
+      x: "-100%",
+    },
+    open: {
+      x: 0,
+      opacity: 1,
+      display: "block",
+      transition: {
+        duration: 0.3,
+        delay: 0.3,
+      },
+    },
+    closed: {
+      y: "100%",
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+      },
+      transitionEnd: {
+        x: "-100%",
+        y: 0,
+        display: "none",
+      },
+    },
+  };
 
   const formSchema = Yup.object().shape({
     email: Yup.string()
@@ -37,7 +66,7 @@ const Signin = () => {
       .then((res) => {
         console.log(res.data);
         setIsLoading(false);
-        router.push('/dashboard');
+        // router.push("/dashboard");
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -47,11 +76,24 @@ const Signin = () => {
 
   return (
     <div className={style.signinSignupRoot}>
-      <div className="signinPage">
-        <div className="container md:flex items-center justify-between min-h-screen w-full m-auto px-7 sm:px-2">
-          <div className="w-full px-2 sm:px-7 pt-4 sm:pt-0 md:px-0 md:w-5/6 xl:w-4/6 md:max-h-screen md:overflow-hidden">
-            <Image src={vectorSvg} />
-          </div>
+      <div className="signinPages">
+        <div className="container md:flex items-center justify-between min-h-screen w-full m-auto px-7 sm:px-2 overflow-hidden">
+          <motion.div
+            initial="hiddenLeft"
+            animate={isLoading ? "closed" : "open"}
+            variants={variants}
+            className="w-full px-2 sm:px-7 pt-4 sm:pt-0 md:px-0 md:w-5/6 xl:w-4/6 md:max-h-screen md:overflow-hidden"
+          >
+            <Image src={initialVectorSvg} />
+          </motion.div>
+          <motion.div
+            initial="closed"
+            animate={isLoading ? "open" : "closed"}
+            variants={variants}
+            className="w-full px-2 sm:px-7 pt-4 sm:pt-0 md:px-0 md:w-5/6 xl:w-4/6 md:max-h-screen md:overflow-hidden"
+          >
+            <Image src={loadingVectorSvg} />
+          </motion.div>
           <div className="w-full m-auto sm:w-5/6 md:w-4/6 lg:w-3/6 xl:w-2/6">
             <div className="login-form md:w-full lg:w-11/12 xl:w-3/4 m-auto">
               <h1>
