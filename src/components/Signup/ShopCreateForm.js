@@ -1,8 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import logoVectorSvg from '../../assets/images/logoVector.svg';
 
 const ShopCreateForm = ({ state }) => {
   const router = useRouter();
@@ -42,7 +44,7 @@ const ShopCreateForm = ({ state }) => {
       data.userId = userData.id;
       console.log(data);
     }
-    setIsLoading(1);
+    setTimeout(() => setIsLoading(3), 2000);
 
     // API.post("/user/signup", data)
     //   .then((res) => {
@@ -60,6 +62,9 @@ const ShopCreateForm = ({ state }) => {
   };
   return (
     <div className="login-form md:w-full lg:w-11/12 xl:w-3/4 m-auto">
+      <div className="w-28 m-auto">
+        <Image src={logoVectorSvg}/>
+      </div>
       <h1>
         Create your shop in <span>Pharmacy</span>
       </h1>

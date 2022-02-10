@@ -25,9 +25,9 @@
   }
 }
 
-@keyframes signinVisitAnimation {
+@keyframes openPageAnimation {
   0% {
-    width: 50%;
+    width: 51%;
   }
   100% {
     width: 0%;

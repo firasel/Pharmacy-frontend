@@ -3,9 +3,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import loadingVectorSvg from "../../assets/images/catVector.svg";
-import invalidVectorSvg from "../../assets/images/invalidVector.svg";
+import errorVectorSVG from "../../assets/images/errorVector.svg";
 import initialVectorSvg from "../../assets/images/vectorSignin.svg";
-import useWindowSize from "../../helper/useWindowSize";
 import style from "../Signin/Signin.module.scss";
 import ShopCreateForm from "./ShopCreateForm";
 import UserSignupForm from "./userSignupForm";
@@ -14,45 +13,12 @@ const Signup = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(0); // 0=first load, 1=default, 2=loading, 3=error
   const [stepOneDone, setStepOneDone] = useState(false);
-  setTimeout(() => setStepOneDone(true), 2000); //Remove after test
+  setTimeout(() => setStepOneDone(true), 3000); //Remove after test
 
   // Framer motion hook for run animation first time load
   const leftAnimateControl = useAnimation();
   const rightAnimateControl = useAnimation();
   const shopFormAnimateControl = useAnimation();
-
-  // Custom hook for detect window size
-  const size = useWindowSize();
-
-  // Set closed animation depending on window size
-  let closedAnimation =
-    size?.width < 768
-      ? {
-          x: "100%",
-          y: 0,
-          opacity: 0,
-          transition: {
-            duration: 0.3,
-          },
-          transitionEnd: {
-            x: "-100%",
-            y: 0,
-            display: "none",
-          },
-        }
-      : {
-          y: "100%",
-          x: 0,
-          opacity: 0,
-          transition: {
-            duration: 0.3,
-          },
-          transitionEnd: {
-            x: "-100%",
-            y: 0,
-            display: "none",
-          },
-        };
 
   // Animation variants
   const variants = {
@@ -66,15 +32,7 @@ const Signup = () => {
       display: "none",
       opacity: 0,
     },
-    showRight: {
-      x: 0,
-      opacity: 1,
-      display: "block",
-      transition: {
-        duration: 0.2,
-      },
-    },
-    showLeft: {
+    openFirstLoad: {
       x: 0,
       opacity: 1,
       display: "block",
@@ -88,11 +46,21 @@ const Signup = () => {
       display: "block",
       transition: {
         duration: 0.3,
-        delay: 0.5,
+        delay: 0.3,
+      },
+    },
+    closedForm: {
+      x: "100%",
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+      },
+      transitionEnd: {
+        display: "none",
       },
     },
     open: {
-      x: 0,
+      scale: 1,
       opacity: 1,
       display: "block",
       transition: {
@@ -100,7 +68,16 @@ const Signup = () => {
         delay: 0.3,
       },
     },
-    closed: closedAnimation,
+    closed: {
+      scale: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+      },
+      transitionEnd: {
+        display: "none",
+      },
+    },
   };
 
   // Animation conditional start and stop
@@ -108,8 +85,8 @@ const Signup = () => {
     if (isLoading === 1) {
       leftAnimateControl.start("open");
     } else if (isLoading === 0) {
-      leftAnimateControl.start("showLeft");
-      rightAnimateControl.start("showRight");
+      leftAnimateControl.start("openFirstLoad");
+      rightAnimateControl.start("openFirstLoad");
     } else {
       leftAnimateControl.start("closed");
     }
@@ -117,21 +94,24 @@ const Signup = () => {
 
   useEffect(() => {
     if (stepOneDone) {
-      rightAnimateControl.start("closed");
+      rightAnimateControl.start("closedForm");
       shopFormAnimateControl.start("openForm");
     }
   }, [stepOneDone]);
 
   return (
     <div className={`${style.signinSignupRoot} bg-[#FBFBFB] overflow-hidden`}>
+      {/* <div className="w-28 absolute top-4 right-4">
+        <Image src={logoVectorSvg} />
+      </div> */}
       <div className="container md:flex items-center justify-between min-h-screen w-full m-auto px-7 sm:px-2">
-        <div className="w-full sm:px-7 md:px-2 pt-4 sm:pt-2 md:pt-0 mb-3 md:mb-0 md:w-5/6 xl:w-4/6 md:max-h-screen md:overflow-hidden">
+        <div className="w-full sm:px-7 md:px-2 pt-4 sm:pt-2 md:pt-0 mb-3 md:mb-0 md:w-5/6 xl:w-4/6 max-h-screen md:overflow-hidden">
           <motion.div
             initial="hiddenLeft"
             animate={leftAnimateControl}
             variants={variants}
           >
-            <Image src={initialVectorSvg} />
+            <Image className="max-h-screen" src={initialVectorSvg} />
           </motion.div>
           <motion.div
             initial="closed"
@@ -145,7 +125,7 @@ const Signup = () => {
             animate={isLoading === 3 ? "open" : "closed"}
             variants={variants}
           >
-            <Image src={invalidVectorSvg} />
+            <Image src={errorVectorSVG} />
           </motion.div>
         </div>
         <div className="w-full m-auto sm:w-5/6 md:w-4/6 lg:w-3/6 xl:w-2/6 pb-4 md:pb-0">
