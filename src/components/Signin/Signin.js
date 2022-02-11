@@ -68,7 +68,7 @@ const Signin = () => {
           </div>
         </Modal>
       )}
-      <div className="signinPage">
+      <div className="signinSignUpPage">
         <div className="closePageStyle">
           <motion.div
             variants={pageCloseVariants}

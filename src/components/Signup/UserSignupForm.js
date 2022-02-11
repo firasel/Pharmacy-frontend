@@ -2,12 +2,18 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import * as Yup from "yup";
 import API from "../../api/AxiosInstance";
+import { modalState } from "../../atoms/modalAtom";
 
-const UserSignupForm = ({ state }) => {
+const UserSignupForm = ({ completeState, loadingState }) => {
   const router = useRouter();
-  const {setIsLoading, setStepOneDone} = state;
+  // State for load and done
+  const { setStepOneDone } = completeState;
+  const { isLoading, setIsLoading } = loadingState;
+  // Modal controlling state
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
   // Form validation schema
   const formSchema = Yup.object().shape({
@@ -52,6 +58,7 @@ const UserSignupForm = ({ state }) => {
       })
       .catch((err) => {
         console.log(err.response.data);
+        setModalOpen(true);
         setIsLoading(3);
       });
   };
@@ -107,7 +114,15 @@ const UserSignupForm = ({ state }) => {
         )}
       </div>
       <button onClick={handleSubmit(onSubmit)} className="formBtn">
-        Sign up
+        {isLoading === 2 ? (
+          <div className="loading">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        ) : (
+          "Sign in"
+        )}
       </button>
       <div className="linkText">
         Already have an account?

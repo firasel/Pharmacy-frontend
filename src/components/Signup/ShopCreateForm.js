@@ -1,14 +1,23 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import logoVectorSvg from '../../assets/images/logoVector.svg';
+import API from "../../api/AxiosInstance";
 
-const ShopCreateForm = ({ state }) => {
+const ShopCreateForm = ({
+  animation,
+  completeState,
+  loadingState,
+  signUpDoneSate,
+}) => {
   const router = useRouter();
-  const { setIsLoading } = state;
+  // State control with props
+  const { setStepOneDone } = completeState;
+  const { setSignUpDone } = signUpDoneSate;
+  const { AnimationController } = animation;
+
+  const { isLoading, setIsLoading } = loadingState;
 
   // Form validation schema
   const shopFormSchema = Yup.object().shape({
@@ -42,32 +51,25 @@ const ShopCreateForm = ({ state }) => {
     if (userData?.id) {
       data.active = true;
       data.userId = userData.id;
-      console.log(data);
-    }
-    setTimeout(() => setIsLoading(3), 2000);
 
-    // API.post("/user/signup", data)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     const { email, _id } = res?.data?.data;
-    //     localStorage.setItem("user", JSON.stringify({ id: _id, email }));
-    //     setIsLoading(1);
-    //     setStepOneDone(true);
-    //     // router.push("/dashboard");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response.data);
-    //     setIsLoading(3);
-    //   });
+      API.post("/store/add", data)
+        .then((res) => {
+          console.log(res?.data?.data);
+          setIsLoading(1);
+          setSignUpDone(true);
+          AnimationController.play();
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setIsLoading(3);
+        });
+    } else {
+      setStepOneDone(false);
+    }
   };
   return (
     <div className="login-form md:w-full lg:w-11/12 xl:w-3/4 m-auto">
-      <div className="w-28 m-auto">
-        <Image src={logoVectorSvg}/>
-      </div>
-      <h1>
-        Create your shop in <span>Pharmacy</span>
-      </h1>
+      <h1 className="md:!text-[1.8rem]">Create your store</h1>
       <div className={`inputStyle ${errors.storeName && "errInputStyle"}`}>
         <input
           type="text"
@@ -75,7 +77,7 @@ const ShopCreateForm = ({ state }) => {
           name="storeName"
           {...register("storeName")}
         />
-        <label>Store Name</label>
+        <label>Store name</label>
         {errors.storeName && (
           <p className="errorText">{errors.storeName.message}</p>
         )}
@@ -102,9 +104,16 @@ const ShopCreateForm = ({ state }) => {
           <p className="errorText">{errors.storeAddress.message}</p>
         )}
       </div>
-
       <button onClick={handleSubmit(shopFormHandler)} className="formBtn">
-        Sign up
+        {isLoading === 2 ? (
+          <div className="loading">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        ) : (
+          "Create store"
+        )}
       </button>
     </div>
   );

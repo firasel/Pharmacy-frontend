@@ -1,148 +1,175 @@
-import { motion, useAnimation } from "framer-motion";
-import Image from "next/image";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import loadingVectorSvg from "../../assets/images/catVector.svg";
-import errorVectorSVG from "../../assets/images/errorVector.svg";
-import initialVectorSvg from "../../assets/images/vectorSignin.svg";
+import { IoMdClose } from "react-icons/io";
+import { useRecoilState } from "recoil";
+import confettiAnimation from "../../assets/animation/confettiData.json";
+import errorAnimation from "../../assets/animation/errorData.json";
+import Logo from "../../assets/images/Logo";
+import { modalState } from "../../atoms/modalAtom";
+import {
+  AnimationController,
+  LottieAnimation
+} from "../../helper/LottieAnimation";
+import Modal from "../../SharedComponents/Modal/Modal";
 import style from "../Signin/Signin.module.scss";
+import { pageCloseVariants, variants } from "./animationVariants";
 import ShopCreateForm from "./ShopCreateForm";
-import UserSignupForm from "./userSignupForm";
+import Sidebar from "./Sidebar";
+import UserSignupForm from "./UserSignupForm";
 
 const Signup = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(0); // 0=first load, 1=default, 2=loading, 3=error
+  // Page close state
+  const [pageClose, setPageClose] = useState(false);
+  const [signUpDone, setSignUpDone] = useState(false);
+  // Signup step is complete state
   const [stepOneDone, setStepOneDone] = useState(false);
-  setTimeout(() => setStepOneDone(true), 3000); //Remove after test
+  // State for change the page content
+  const [contentChnage, setContentChnage] = useState(false);
+  // Modal state
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
   // Framer motion hook for run animation first time load
-  const leftAnimateControl = useAnimation();
-  const rightAnimateControl = useAnimation();
-  const shopFormAnimateControl = useAnimation();
-
-  // Animation variants
-  const variants = {
-    hiddenLeft: {
-      x: "-100%",
-      display: "none",
-      opacity: 0,
-    },
-    hiddenRight: {
-      x: "100%",
-      display: "none",
-      opacity: 0,
-    },
-    openFirstLoad: {
-      x: 0,
-      opacity: 1,
-      display: "block",
-      transition: {
-        duration: 0.2,
-      },
-    },
-    openForm: {
-      x: 0,
-      opacity: 1,
-      display: "block",
-      transition: {
-        duration: 0.3,
-        delay: 0.3,
-      },
-    },
-    closedForm: {
-      x: "100%",
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-      transitionEnd: {
-        display: "none",
-      },
-    },
-    open: {
-      scale: 1,
-      opacity: 1,
-      display: "block",
-      transition: {
-        duration: 0.3,
-        delay: 0.3,
-      },
-    },
-    closed: {
-      scale: 0,
-      opacity: 0,
-      transition: {
-        duration: 0.3,
-      },
-      transitionEnd: {
-        display: "none",
-      },
-    },
-  };
-
-  // Animation conditional start and stop
-  useEffect(() => {
-    if (isLoading === 1) {
-      leftAnimateControl.start("open");
-    } else if (isLoading === 0) {
-      leftAnimateControl.start("openFirstLoad");
-      rightAnimateControl.start("openFirstLoad");
-    } else {
-      leftAnimateControl.start("closed");
-    }
-  }, [isLoading]);
+  const leftSideRef = useAnimation();
+  const rightSideRef = useAnimation();
 
   useEffect(() => {
     if (stepOneDone) {
-      rightAnimateControl.start("closedForm");
-      shopFormAnimateControl.start("openForm");
+      setTimeout(() => setContentChnage(true), 150);
+      leftSideRef.start("LeftIsRight");
+      rightSideRef.start("RightIsLeft");
+    } else {
+      leftSideRef.start("LeftIsLeft");
+      rightSideRef.start("RightIsRight");
     }
   }, [stepOneDone]);
 
+  useEffect(() => {
+    if (signUpDone) {
+      setTimeout(() => {
+        setPageClose(true);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 200);
+      }, 1000);
+    }
+  }, [signUpDone]);
+
   return (
     <div className={`${style.signinSignupRoot} bg-[#FBFBFB] overflow-hidden`}>
-      {/* <div className="w-28 absolute top-4 right-4">
-        <Image src={logoVectorSvg} />
-      </div> */}
-      <div className="container md:flex items-center justify-between min-h-screen w-full m-auto px-7 sm:px-2">
-        <div className="w-full sm:px-7 md:px-2 pt-4 sm:pt-2 md:pt-0 mb-3 md:mb-0 md:w-5/6 xl:w-4/6 max-h-screen md:overflow-hidden">
+      {modalOpen && (
+        <Modal
+          handleClose={() => setModalOpen(false)}
+          type={"dropIn"}
+          style={"md:!-mt-32"}
+        >
+          <div className="px-2 py-3">
+            <IoMdClose
+              onClick={() => setModalOpen(false)}
+              className="ml-auto text-5xl p-1 text-red-500 cursor-pointer"
+            />
+            <LottieAnimation
+              style={"w-3/4 md:w-3/6 m-auto"}
+              animationData={errorAnimation}
+              animationOptions={{
+                autoplay: true,
+                loop: 2,
+                width: "300",
+              }}
+            />
+            <h1 className="text-base text-center font-[Lato] mb-3">
+              Something went wrong, Please try again.
+            </h1>
+          </div>
+        </Modal>
+      )}
+      <div className="signinSignUpPage">
+        <div className="closePageStyle">
           <motion.div
-            initial="hiddenLeft"
-            animate={leftAnimateControl}
-            variants={variants}
-          >
-            <Image className="max-h-screen" src={initialVectorSvg} />
-          </motion.div>
+            variants={pageCloseVariants}
+            initial="hideLeft"
+            animate={pageClose ? "showLeft" : "hideLeft"}
+            className="leftPart"
+          ></motion.div>
           <motion.div
-            initial="closed"
-            animate={isLoading === 2 ? "open" : "closed"}
-            variants={variants}
-          >
-            <Image src={loadingVectorSvg} />
-          </motion.div>
-          <motion.div
-            initial="closed"
-            animate={isLoading === 3 ? "open" : "closed"}
-            variants={variants}
-          >
-            <Image src={errorVectorSVG} />
-          </motion.div>
+            variants={pageCloseVariants}
+            initial="hideRight"
+            animate={pageClose ? "showRight" : "hideRight"}
+            className="rightPart"
+          ></motion.div>
         </div>
-        <div className="w-full m-auto sm:w-5/6 md:w-4/6 lg:w-3/6 xl:w-2/6 pb-4 md:pb-0">
+        <div className="w-full flex min-h-screen">
           <motion.div
-            initial="hiddenRight"
-            animate={rightAnimateControl}
             variants={variants}
+            initial="hiddenLeft"
+            animate={leftSideRef}
+            className="w-full hidden md:block bg-[#005081] z-10"
           >
-            <UserSignupForm state={{ setIsLoading, setStepOneDone }} />
+            <Sidebar />
           </motion.div>
+          {/* Form start */}
           <motion.div
-            initial="hiddenRight"
-            animate={shopFormAnimateControl}
             variants={variants}
+            initial="hiddenRight"
+            animate={rightSideRef}
+            className="w-full min-h-screen overflow-hidden relative z-0"
           >
-            <ShopCreateForm state={{ setIsLoading }} />
+            <AnimatePresence>
+              {contentChnage ? (
+                <motion.div
+                  variants={variants}
+                  initial="formHide"
+                  animate="formShow"
+                  exit="formExit"
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
+                    <div className="logo mx-auto w-28 mt-1 mb-3">
+                      <Logo />
+                    </div>
+                    <ShopCreateForm
+                      animation={{ AnimationController }}
+                      signUpDoneSate={{ setSignUpDone }}
+                      completeState={{ setStepOneDone }}
+                      loadingState={{ isLoading, setIsLoading }}
+                    />
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  variants={variants}
+                  initial="formHide"
+                  animate="formShow"
+                  exit="formExit"
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
+                    <div className="logo mx-auto w-28 mt-1 mb-3">
+                      <Logo />
+                    </div>
+                    <UserSignupForm
+                      loadingState={{ isLoading, setIsLoading }}
+                      completeState={{ setStepOneDone }}
+                    />
+                  </div>
+                </motion.div>
+              )}
+              <div className={`loginSuccess ${signUpDone && "!block"}`}>
+                <LottieAnimation
+                  style={"loginSuccessAnimation"}
+                  animationData={confettiAnimation}
+                  animationOptions={{
+                    autoplay: false,
+                    loop: 1,
+                    width: "300",
+                  }}
+                />
+              </div>
+            </AnimatePresence>
           </motion.div>
+          {/* Form end */}
         </div>
       </div>
     </div>
