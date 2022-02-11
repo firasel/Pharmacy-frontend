@@ -2,14 +2,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useRecoilState } from "recoil";
 import * as Yup from "yup";
 import API from "../../api/AxiosInstance";
+import { modalState } from "../../atoms/modalAtom";
 
 const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
   const router = useRouter();
+  // State recive with props
   const { isLoading, setIsLoading } = loadingState;
   const { setLoginSuccess } = loginSuccessState;
   const { AnimationController } = Animation;
+  // Recoil state for modal control
+  const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
   // Form validation schema
   const formSchema = Yup.object().shape({
@@ -45,6 +50,7 @@ const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
         console.log(err.response.data);
         setIsLoading(3);
         setLoginSuccess(false);
+        setModalOpen(true);
       });
   };
 

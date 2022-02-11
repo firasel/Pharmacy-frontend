@@ -19,11 +19,14 @@ import SigninForm from "./SigninForm";
 
 const Signin = () => {
   const router = useRouter();
+  // State for control loading,close,loginsuccess
   const [pageClose, setPageClose] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(0); // 0=first load, 1=default, 2=loading, 3=error
+  // Recoil state for modal control
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
+  // Check use login success or not
   useEffect(() => {
     if (loginSuccess) {
       setTimeout(() => {
@@ -32,8 +35,6 @@ const Signin = () => {
           router.push("/dashboard");
         }, 200);
       }, 1000);
-    }else{
-      
     }
   }, [loginSuccess]);
 

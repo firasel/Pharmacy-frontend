@@ -1,4 +1,4 @@
-// Animation variants
+// Framer-motion Animation variants
 const variants = {
   hiddenLeft: {
     x: "-100%",
