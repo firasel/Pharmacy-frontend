@@ -1,92 +1,69 @@
 import { motion } from "framer-motion";
-import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { IoMdClose } from "react-icons/io";
 import { useRecoilState } from "recoil";
-import confettiAnimation from "../../assets/animation/confetti.json";
+import confettiAnimation from "../../assets/animation/confettiData.json";
+import lockAnimation from "../../assets/animation/lockData.json";
 import Logo from "../../assets/images/Logo";
-import pharmacyImg from "../../assets/images/vectorSignin.svg";
-import { modalState, modalTypeState } from "../../atoms/modalAtom";
+import { modalState } from "../../atoms/modalAtom";
 import {
   AnimationController,
   LottieAnimation
 } from "../../helper/LottieAnimation";
 import Modal from "../../SharedComponents/Modal/Modal";
+import { pageCloseVariants, variants } from "./animationVariants";
+import Sidebar from "./Sidebar";
 import style from "./Signin.module.scss";
 import SigninForm from "./SigninForm";
 
 const Signin = () => {
+  const router = useRouter();
   const [pageClose, setPageClose] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(0); // 0=first load, 1=default, 2=loading, 3=error
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
-  const [modalType, setModalType] = useRecoilState(modalTypeState);
-  console.log(modalOpen);
-  // setTimeout(() => {
-  //   setModalOpen(true);
-  // }, 3000);
-  // setTimeout(() => {
-  //   AnimationController.play();
-  // }, 3000);
 
-  const pageCloseVariants = {
-    hideLeft: {
-      opacity: 0,
-      x: "-100%",
-    },
-    hideRight: {
-      opacity: 0,
-      x: "200%",
-    },
-    showLeft: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    showRight: {
-      opacity: 1,
-      x: "99%",
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-
-  // Animation variants
-  const variants = {
-    hiddenLeft: {
-      x: "-100%",
-      opacity: 0,
-    },
-    hiddenRight: {
-      x: "100%",
-      opacity: 0,
-    },
-    showRight: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.2,
-      },
-    },
-    showLeft: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.2,
-      },
-    },
-  };
-  console.log(pageClose);
+  useEffect(() => {
+    if (loginSuccess) {
+      setTimeout(() => {
+        setPageClose(true);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 200);
+      }, 1000);
+    }else{
+      
+    }
+  }, [loginSuccess]);
 
   return (
     <div
       className={`${style.signinSignupRoot} bg-[#FBFBFB] overflow-hidden relative`}
     >
       {modalOpen && (
-        <Modal handleClose={() => setModalOpen(false)} type={"dropIn"}>
+        <Modal
+          handleClose={() => setModalOpen(false)}
+          type={"dropIn"}
+          style={"md:-mt-40"}
+        >
           <div className="px-2 py-3">
-            <h1 className="text-2xl text-center">Hello World</h1>
+            <IoMdClose
+              onClick={() => setModalOpen(false)}
+              className="ml-auto text-5xl p-1 text-red-500 cursor-pointer"
+            />
+            <LottieAnimation
+              style={"w-3/4 md:w-3/6 m-auto"}
+              animationData={lockAnimation}
+              animationOptions={{
+                autoplay: true,
+                loop: 2,
+                width: "300",
+              }}
+            />
+            <h1 className="text-base text-center font-[Lato] mb-3">
+              Your email or password is incorrect. Please try again.
+            </h1>
           </div>
         </Modal>
       )}
@@ -112,19 +89,7 @@ const Signin = () => {
             initial="hiddenLeft"
             className="w-full hidden md:block bg-[#005081]"
           >
-            <div className="flex items-center justify-center min-h-full">
-              <div className="w-4/6 px-0">
-                <Image src={pharmacyImg} />
-                <h1 className="sidebarTitle">
-                  Welcome back to Medicine Manage
-                </h1>
-                <p className="sidebarMessage">
-                  Manage your medicine store smartly. Set your sales targets for
-                  today and easily calculate the revenue and costs of your
-                  store.
-                </p>
-              </div>
-            </div>
+            <Sidebar />
           </motion.div>
           <motion.div
             variants={variants}
@@ -139,27 +104,18 @@ const Signin = () => {
                 </div>
                 <SigninForm
                   loadingState={{ isLoading, setIsLoading }}
-                  closeState={{ setPageClose }}
+                  loginSuccessState={{ setLoginSuccess }}
                   Animation={{ AnimationController }}
                 />
               </div>
             </div>
-            <div className=" z-[-1] ">
+            <div className={`loginSuccess ${loginSuccess && "!block"}`}>
               <LottieAnimation
-              style={"absolute bottom-[-25px] left-[-25px] w-[15rem] h-auto"}
+                style={"loginSuccessAnimation"}
                 animationData={confettiAnimation}
                 animationOptions={{
                   autoplay: false,
-                  loop: false,
-                  width: "300",
-                }}
-              />
-              <LottieAnimation
-              style={"absolute bottom-[-25px] right-[25px] w-[15rem] h-auto rotate-[270deg] mr-[-3rem]"}
-                animationData={confettiAnimation}
-                animationOptions={{
-                  autoplay: false,
-                  loop: false,
+                  loop: 1,
                   width: "300",
                 }}
               />

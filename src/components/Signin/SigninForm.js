@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-// import API from "../../api/AxiosInstance";
+import API from "../../api/AxiosInstance";
 
-const SigninForm = ({ loadingState, closeState, Animation }) => {
+const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
   const router = useRouter();
   const { isLoading, setIsLoading } = loadingState;
-  const { setPageClose } = closeState;
+  const { setLoginSuccess } = loginSuccessState;
   const { AnimationController } = Animation;
 
   // Form validation schema
@@ -34,25 +34,18 @@ const SigninForm = ({ loadingState, closeState, Animation }) => {
   // Form submit function
   const onSubmit = (data) => {
     setIsLoading(2);
-    // API.post("/user/signin", data)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     setIsLoading(1);
-    //     // router.push("/dashboard");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response.data);
-    //     setIsLoading(3);
-    //   });
-
-    setTimeout(() => {
-      setIsLoading(1);
-      AnimationController.play();
-      setTimeout(() => {
-        setPageClose(true);
-        setTimeout(() => router.push("/dashboard"), 250);
-      }, 3000);
-    }, 1000);
+    API.post("/user/signin", data)
+      .then((res) => {
+        console.log(res.data);
+        setIsLoading(1);
+        setLoginSuccess(true);
+        AnimationController.play();
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setIsLoading(3);
+        setLoginSuccess(false);
+      });
   };
 
   return (

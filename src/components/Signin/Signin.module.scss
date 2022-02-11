@@ -38,6 +38,18 @@
     }
   }
 
+  .loginSuccess {
+    display: none;
+    .loginSuccessAnimation {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      svg {
+        height: 100vh !important;
+      }
+    }
+  }
+
   // .backgroundImg {
   //   background-image: url(imgUrl.js);
   //   background-repeat: no-repeat;

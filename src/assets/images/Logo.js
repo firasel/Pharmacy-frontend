@@ -1,6 +1,6 @@
-const Logo = () => {
+const Logo = ({ style }) => {
   return (
-    <div>
+    <div className={style}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="100%"
