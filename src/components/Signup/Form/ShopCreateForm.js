@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import API from "../../api/AxiosInstance";
+import API from "../../../api/AxiosInstance";
 
 const ShopCreateForm = ({
   animation,
@@ -19,16 +19,21 @@ const ShopCreateForm = ({
 
   const { isLoading, setIsLoading } = loadingState;
 
+  // Regular expression
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
   // Form validation schema
   const shopFormSchema = Yup.object().shape({
     storeName: Yup.string()
       .required("Please enter your store name.")
       .trim("Please enter a valid store name.")
       .min(2, "Please enter a valid store name."),
-    phone: Yup.number()
+    phone: Yup.string()
       .required("Please enter your phone number.")
-      .typeError("Phone must be valid and contain 10 digits.")
-      .min(10000, "Please enter a valid phone number."),
+      .matches(phoneRegExp, "Please enter a valid phone number.")
+      .min(10, "Please enter a valid phone number.")
+      .max(13, "Please enter a valid phone number."),
     storeAddress: Yup.string()
       .required("Please enter your address.")
       .min(2, "Please enter a valid address."),
@@ -89,7 +94,7 @@ const ShopCreateForm = ({
           name="phone"
           {...register("phone", { valueAsNumber: true })}
         />
-        <label>Phone</label>
+        <label>Phone number</label>
         {errors.phone && <p className="errorText">{errors.phone.message}</p>}
       </div>
       <div className={`inputStyle ${errors.storeAddress && "errInputStyle"}`}>

@@ -4,8 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import * as Yup from "yup";
-import API from "../../api/AxiosInstance";
-import { modalState } from "../../atoms/modalAtom";
+import API from "../../../api/AxiosInstance";
+import { modalState } from "../../../atoms/modalAtom";
 
 const UserSignupForm = ({ completeState, loadingState }) => {
   const router = useRouter();
@@ -66,7 +66,7 @@ const UserSignupForm = ({ completeState, loadingState }) => {
   return (
     <div className="login-form md:w-full lg:w-11/12 xl:w-3/4 m-auto">
       <h1>
-        Sign up to <span>Pharmacy</span>
+        Sign up to <span>Medicine Manage</span>
       </h1>
       <div className={`inputStyle ${errors.name && "errInputStyle"}`}>
         <input type="text" placeholder=" " name="name" {...register("name")} />
@@ -121,7 +121,7 @@ const UserSignupForm = ({ completeState, loadingState }) => {
             <div></div>
           </div>
         ) : (
-          "Sign in"
+          "Sign Up"
         )}
       </button>
       <div className="linkText">

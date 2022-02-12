@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
@@ -14,9 +14,9 @@ import {
 import Modal from "../../SharedComponents/Modal/Modal";
 import style from "../Signin/Signin.module.scss";
 import { pageCloseVariants, variants } from "./animationVariants";
-import ShopCreateForm from "./ShopCreateForm";
-import Sidebar from "./Sidebar";
-import UserSignupForm from "./UserSignupForm";
+import ShopCreateForm from "./Form/ShopCreateForm";
+import UserSignupForm from "./Form/UserSignupForm";
+import Sidebar from "./Sidebar/Sidebar";
 
 const Signup = () => {
   const router = useRouter();
@@ -35,6 +35,7 @@ const Signup = () => {
   const leftSideRef = useAnimation();
   const rightSideRef = useAnimation();
 
+  // Handle animation and show/hide form
   useEffect(() => {
     if (stepOneDone) {
       setTimeout(() => setContentChnage(true), 150);
@@ -46,6 +47,7 @@ const Signup = () => {
     }
   }, [stepOneDone]);
 
+  // Handle routing after complete signup
   useEffect(() => {
     if (signUpDone) {
       setTimeout(() => {
@@ -107,67 +109,65 @@ const Signup = () => {
             animate={leftSideRef}
             className="w-full hidden md:block bg-[#005081] z-10"
           >
-            <Sidebar />
+            <Sidebar completeState={{ stepOneDone }} />
           </motion.div>
           {/* Form start */}
           <motion.div
             variants={variants}
             initial="hiddenRight"
             animate={rightSideRef}
-            className="w-full min-h-screen overflow-hidden relative z-0"
+            className="w-full min-h-screen overflow-hidden relative z-0 sigupPageForm"
           >
-            <AnimatePresence>
-              {contentChnage ? (
-                <motion.div
-                  variants={variants}
-                  initial="formHide"
-                  animate="formShow"
-                  exit="formExit"
-                  className="w-full h-full flex items-center justify-center"
-                >
-                  <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
-                    <div className="logo mx-auto w-28 mt-1 mb-3">
-                      <Logo />
-                    </div>
-                    <ShopCreateForm
-                      animation={{ AnimationController }}
-                      signUpDoneSate={{ setSignUpDone }}
-                      completeState={{ setStepOneDone }}
-                      loadingState={{ isLoading, setIsLoading }}
-                    />
+            {contentChnage ? (
+              <motion.div
+                variants={variants}
+                initial="formHide"
+                animate="formShow"
+                exit="formExit"
+                className="w-full h-full flex items-center justify-center"
+              >
+                <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
+                  <div className="logo mx-auto w-28 mt-1 mb-3">
+                    <Logo />
                   </div>
-                </motion.div>
-              ) : (
-                <motion.div
-                  variants={variants}
-                  initial="formHide"
-                  animate="formShow"
-                  exit="formExit"
-                  className="w-full h-full flex items-center justify-center"
-                >
-                  <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
-                    <div className="logo mx-auto w-28 mt-1 mb-3">
-                      <Logo />
-                    </div>
-                    <UserSignupForm
-                      loadingState={{ isLoading, setIsLoading }}
-                      completeState={{ setStepOneDone }}
-                    />
+                  <ShopCreateForm
+                    animation={{ AnimationController }}
+                    signUpDoneSate={{ setSignUpDone }}
+                    completeState={{ setStepOneDone }}
+                    loadingState={{ isLoading, setIsLoading }}
+                  />
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                variants={variants}
+                initial="formHide"
+                animate="formShow"
+                exit="formExit"
+                className="w-full h-full flex items-center justify-center"
+              >
+                <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
+                  <div className="logo mx-auto w-28 mt-1 mb-3">
+                    <Logo />
                   </div>
-                </motion.div>
-              )}
-              <div className={`loginSuccess ${signUpDone && "!block"}`}>
-                <LottieAnimation
-                  style={"loginSuccessAnimation"}
-                  animationData={confettiAnimation}
-                  animationOptions={{
-                    autoplay: false,
-                    loop: 1,
-                    width: "300",
-                  }}
-                />
-              </div>
-            </AnimatePresence>
+                  <UserSignupForm
+                    loadingState={{ isLoading, setIsLoading }}
+                    completeState={{ setStepOneDone }}
+                  />
+                </div>
+              </motion.div>
+            )}
+            <div className={`loginSuccess ${signUpDone && "!block"}`}>
+              <LottieAnimation
+                style={"loginSuccessAnimation"}
+                animationData={confettiAnimation}
+                animationOptions={{
+                  autoplay: false,
+                  loop: 1,
+                  width: "300",
+                }}
+              />
+            </div>
           </motion.div>
           {/* Form end */}
         </div>
