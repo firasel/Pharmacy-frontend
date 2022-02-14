@@ -41,13 +41,11 @@ const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
     setIsLoading(2);
     API.post("/user/signin", data)
       .then((res) => {
-        console.log(res.data);
         setIsLoading(1);
         setLoginSuccess(true);
         AnimationController.play();
       })
       .catch((err) => {
-        console.log(err.response.data);
         setIsLoading(3);
         setLoginSuccess(false);
         setModalOpen(true);
