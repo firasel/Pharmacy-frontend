@@ -22,6 +22,7 @@ const Signin = () => {
   // State for control loading,close,loginsuccess
   const [pageClose, setPageClose] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [errorCode, setErrorCode] = useState(0);
   const [isLoading, setIsLoading] = useState(0); // 0=first load, 1=default, 2=loading, 3=error
   // Recoil state for modal control
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
@@ -62,9 +63,22 @@ const Signin = () => {
                 width: "300",
               }}
             />
-            <h1 className="text-base text-center font-[Lato] mb-3">
-              Your email or password is incorrect. Please try again.
-            </h1>
+            {errorCode === 401 && (
+              <h1 className="text-base text-center font-[Lato] mb-3">
+                Your email or password is incorrect. Please try again.
+              </h1>
+            )}
+            {errorCode === 403 && (
+              <h1 className="text-base text-center font-[Lato] mb-3">
+                Please complete the sign up process and try again. Otherwise,
+                contact.
+              </h1>
+            )}
+            {errorCode === 0 && (
+              <h1 className="text-base text-center font-[Lato] mb-3">
+                Please try signing in again.
+              </h1>
+            )}
           </div>
         </Modal>
       )}
@@ -96,7 +110,7 @@ const Signin = () => {
             variants={variants}
             animate="showRight"
             initial="hiddenRight"
-            className="w-full min-h-screen overflow-hidden relative"
+            className="w-full min-h-screen overflow-hidden"
           >
             <div className="w-full h-full flex items-center justify-center">
               <div className="w-5/6 sm:w-4/6 xl:w-[33rem] md:mb-[10%]">
@@ -107,6 +121,7 @@ const Signin = () => {
                   loadingState={{ isLoading, setIsLoading }}
                   loginSuccessState={{ setLoginSuccess }}
                   Animation={{ AnimationController }}
+                  errorState={{ setErrorCode }}
                 />
               </div>
             </div>

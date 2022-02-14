@@ -3,31 +3,26 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
-import * as Yup from "yup";
 import API from "../../api/AxiosInstance";
 import { modalState } from "../../atoms/modalAtom";
+import SigninFormSchema from "./SigninFormSchema";
 
-const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
+const SigninForm = ({
+  loadingState,
+  loginSuccessState,
+  Animation,
+  errorState,
+}) => {
   const router = useRouter();
   // State recive with props
   const { isLoading, setIsLoading } = loadingState;
   const { setLoginSuccess } = loginSuccessState;
   const { AnimationController } = Animation;
+  const { setErrorCode } = errorState;
   // Recoil state for modal control
   const [modalOpen, setModalOpen] = useRecoilState(modalState);
 
-  // Form validation schema
-  const formSchema = Yup.object().shape({
-    email: Yup.string()
-      .required("Please enter your email.")
-      .email("Please enter a valid email."),
-    password: Yup.string()
-      .required("Please enter your password.")
-      .min(6, "Password length should be at least 6 characters.")
-      .max(50, "Password must be within 60 characters."),
-  });
-
-  const validationOpt = { resolver: yupResolver(formSchema) };
+  const validationOpt = { resolver: yupResolver(SigninFormSchema) };
   // React hook form
   const {
     register,
@@ -39,13 +34,22 @@ const SigninForm = ({ loadingState, loginSuccessState, Animation }) => {
   // Form submit function
   const onSubmit = (data) => {
     setIsLoading(2);
-    API.post("/user/signin", data)
+    setErrorCode(0);
+
+    API.post("/user/signin", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    })
       .then((res) => {
         setIsLoading(1);
         setLoginSuccess(true);
+        console.log(res.data);
         AnimationController.play();
       })
       .catch((err) => {
+        setErrorCode(err?.response?.status);
         setIsLoading(3);
         setLoginSuccess(false);
         setModalOpen(true);
