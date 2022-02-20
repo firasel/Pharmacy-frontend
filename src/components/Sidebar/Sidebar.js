@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AiOutlineFileText,
   AiOutlineHome,
@@ -11,6 +11,7 @@ import { FiLogOut } from "react-icons/fi";
 import { useRecoilState } from "recoil";
 import logoImg from "../../assets/icons/logo.svg";
 import { sidebarState } from "../../atoms/sidebarAtom";
+import useWindowSize from "../../helper/useWindowSize";
 import style from "./Sidebar.module.scss";
 import SidebarItems from "./SidebarItems";
 
@@ -101,6 +102,10 @@ const Sidebar = () => {
       },
     },
   };
+
+  const windowSize = useWindowSize();
+  console.log(windowSize);
+  useEffect(() => {}, []);
 
   return (
     <motion.div

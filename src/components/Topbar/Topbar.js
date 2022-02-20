@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { RiMenuFoldLine } from "react-icons/ri";
+import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import { useRecoilState } from "recoil";
 import dropdownIcon from "../../assets/icons/dropdown.svg";
 import notificationIcon from "../../assets/icons/notification.svg";
@@ -11,14 +11,14 @@ const Topbar = () => {
   const [sidebarExpand, setSidebarExpand] = useRecoilState(sidebarState);
   console.log(sidebarExpand);
   return (
-    <div className="w-full h-min overflow-hidden bg-white py-3 sticky top-0 z-10">
+    <div className="w-full h-min bg-white py-3 sticky top-0 z-10">
       <div className="px-5 relative">
         <div className="flex justify-between items-center">
           <button
             onClick={() => setSidebarExpand(!sidebarExpand)}
             className="text-3xl p-1"
           >
-            <RiMenuFoldLine />
+            {sidebarExpand ? <RiMenuUnfoldLine /> : <RiMenuFoldLine />}
           </button>
           <span className="text-2xl font-[Poppins]">KD Pharmacy</span>
           <div className="flex items-center gap-2">
