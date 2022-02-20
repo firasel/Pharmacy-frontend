@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React from "react";
+import { AiOutlineBell } from "react-icons/ai";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
 import { useRecoilState } from "recoil";
-import dropdownIcon from "../../assets/icons/dropdown.svg";
-import notificationIcon from "../../assets/icons/notification.svg";
 import doctorImg from "../../assets/images/doctor.jpg";
 import { sidebarState } from "../../atoms/sidebarAtom";
 
@@ -16,17 +16,23 @@ const Topbar = () => {
         <div className="flex justify-between items-center">
           <button
             onClick={() => setSidebarExpand(!sidebarExpand)}
-            className="text-3xl p-1"
+            className="text-2xl md:text-3xl p-1"
           >
             {sidebarExpand ? <RiMenuUnfoldLine /> : <RiMenuFoldLine />}
           </button>
-          <span className="text-2xl font-[Poppins]">KD Pharmacy</span>
+          <span className="hidden md:block text-2xl font-[Poppins]">
+            KD Pharmacy
+          </span>
           <div className="flex items-center gap-2">
-            <div className="w-12 h-12 flex items-center justify-center bg-[#CFFFFD] rounded-lg">
-              <Image width={23} height={23} src={notificationIcon} />
+            <div className="w-8 h-8 md:w-12 md:h-12 flex items-center justify-center bg-[#CFFFFD] rounded-lg">
+              <AiOutlineBell className="text-xl" />
             </div>
             <div className="flex items-center gap-2">
-              <div className="border-[#CFFFFD] border-[3px] rounded-full w-12 h-12 p-[3px] overflow-hidden cursor-pointer">
+              <div
+                className="border-[#CFFFFD] border-[3px] rounded-full 
+              w-8 h-8
+              md:w-12 md:h-12 p-[3px] overflow-hidden cursor-pointer"
+              >
                 <Image
                   width={48}
                   height={48}
@@ -34,9 +40,9 @@ const Topbar = () => {
                   src={doctorImg}
                 />
               </div>
-              <div className="flex items-center gap-[2px] cursor-pointer">
+              <div className="hidden md:flex items-center gap-[2px] cursor-pointer">
                 <span>Md Rasel</span>
-                <Image width={20} height={20} src={dropdownIcon} />
+                <MdKeyboardArrowDown className="text-xl" />
               </div>
             </div>
           </div>

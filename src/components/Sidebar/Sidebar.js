@@ -117,7 +117,7 @@ const Sidebar = () => {
         <div className={`absolute w-full`}>
           {/* Logo start */}
           <div
-            className={`w-full logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200`}
+            className={`w-full logo flex items-center justify-center gap-2 py-3 md:py-5 border-b-[1px] border-gray-200`}
           >
             <Image src={logoImg} />
             <AnimatePresence>
