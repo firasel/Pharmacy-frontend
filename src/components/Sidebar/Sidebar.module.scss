@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
 .sidebarRoot :global {
   .sidebarElement {
     position: relative;
@@ -15,14 +18,31 @@
       background: #cffffd;
       z-index: -10;
       transform: scaleX(0);
-      transform-origin: center;
+      transform-origin: left;
       transition: all 0.1s;
+    }
+    ::after {
+      content: "";
+      width: 5px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: #68dfff;
+      z-index: -1;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: all 0.2s;
     }
 
     :hover {
-      ::before {
+      &::before {
         transform: scaleX(1);
         transition: all 0.3s;
+      }
+      &::after {
+        transform: scaleX(1);
+        transition: all 0.4s;
       }
       opacity: 1 !important;
       color: #37c3e9;
@@ -36,7 +56,7 @@
       padding-top: 1rem;
       padding-bottom: 1rem;
       padding-left: 1.75rem;
-      padding-right: 1rem;
+      padding-right: 0.6rem;
       display: flex;
       align-items: flex-end;
       gap: 0.5rem;
@@ -52,6 +72,11 @@
         color: #313131;
         font-family: "Lato";
       }
+    }
+  }
+  .sidebarSubMenuParent {
+    ::after {
+      display: none !important;
     }
   }
 
@@ -137,7 +162,8 @@
     }
   }
 
-  .activeChild {
+  .activeChild,
+  .activeItem {
     ::before {
       content: "";
       width: 100%;
@@ -180,14 +206,41 @@
   }
 
   .subMenu {
-    display: none;
+    display: block;
+    background: #edfffe;
+    overflow: hidden;
   }
   .subMenuActive {
     display: block !important;
     animation-name: subMenuAnimation;
     animation-duration: 0.3s;
     transform-origin: top;
+  }
+
+  .subMenuSmallStyle {
+    position: absolute;
+    width: auto;
+    left: 3.8rem;
     background: #edfffe;
-    border-radius: 8px;
+    bottom: 0rem;
+    overflow: unset;
+    &::after {
+      content: "";
+      width: 0.6rem;
+      height: 0.6rem;
+      background: #edfffe;
+      position: absolute;
+      top: 0.3rem;
+      left: -0.3rem;
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+    > div > div {
+      padding: 1rem 1.6rem !important;
+      > span {
+        padding: 0 !important;
+        white-space: nowrap;
+      }
+    }
   }
 }

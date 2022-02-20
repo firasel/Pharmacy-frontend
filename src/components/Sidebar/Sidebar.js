@@ -1,120 +1,105 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
 import {
   AiOutlineFileText,
   AiOutlineHome,
   AiOutlineUser
 } from "react-icons/ai";
-import { BiChevronDown } from "react-icons/bi";
 import { BsGraphUp } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
+import { useRecoilState } from "recoil";
 import logoImg from "../../assets/icons/logo.svg";
+import { sidebarState } from "../../atoms/sidebarAtom";
 import style from "./Sidebar.module.scss";
-import subMenuFunction from "./subMenuFunction";
+import SidebarItems from "./SidebarItems";
 
 const Sidebar = () => {
   const [expandKey, setExpandKey] = useState(1);
-  const [activeItem, setActiveItem] = useState(1);
-  const router = useRouter();
+  const [activeItem, setActiveItem] = useState(0);
+  const [subMenuActive, setSubMenuActive] = useState(0);
+  const [sidebarExpand] = useRecoilState(sidebarState);
+
+  const sidebarData = [
+    {
+      key: 1,
+      icon: <AiOutlineHome />,
+      name: "Dashboard",
+      subMenu: false,
+    },
+    {
+      key: 2,
+      icon: <AiOutlineUser />,
+      name: "Products",
+      subMenu: false,
+    },
+    {
+      key: 3,
+      icon: <AiOutlineFileText />,
+      name: "Invoices",
+      subMenuData: [
+        {
+          key: 1,
+          name: "1 Invoices",
+          path: "/dashboard",
+        },
+        {
+          key: 2,
+          name: "2 Invoices",
+          path: "/dashboard/sales",
+        },
+        {
+          key: 3,
+          name: "3 Invoices",
+          path: "/dashboard/sales1",
+        },
+      ],
+      subMenu: true,
+    },
+    {
+      key: 4,
+      icon: <BsGraphUp />,
+      name: "Analytics",
+      subMenu: false,
+    },
+    {
+      key: 5,
+      icon: <FiLogOut />,
+      name: "SignOut",
+      subMenu: false,
+    },
+  ];
 
   return (
-    <div className={`h-screen bg-white pb-4 w-max ${style.sidebarRoot}`}>
-      <div className="w-44 relative">
-        <div className="fixed w-44">
+    <div
+      className={`h-screen bg-white pb-4 w-max ${sidebarExpand && "w-14"} ${
+        style.sidebarRoot
+      }`}
+    >
+      <div className={`${sidebarExpand ? "w-14" : "w-56"} relative`}>
+        <div className={`fixed ${sidebarExpand ? "w-14" : "w-56"}`}>
           {/* Logo start */}
-          <div className="w-100 logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200">
+          <div
+            className={` ${
+              sidebarExpand ? "w-14" : "w-56"
+            } logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200`}
+          >
             <Image src={logoImg} />
-            <span className="font-semibold font-[Poppins]">Pharmacy</span>
+            {!sidebarExpand && (
+              <span className="font-semibold font-[Poppins]">Pharmacy</span>
+            )}
           </div>
           {/* Logo end */}
+
           {/* Items start */}
-          <div className="sidebarElement">
-            <div>
-              <AiOutlineHome />
-              <span>Dashboard</span>
-            </div>
-          </div>
-          <div className="sidebarElement">
-            <div>
-              <AiOutlineUser />
-              <span>Products</span>
-            </div>
-          </div>
-
-          <div
-            className={`sidebarElement ${expandKey === 1 && "active"}`}
-            onClick={() => subMenuFunction([expandKey, setExpandKey], 1)}
-          >
-            <div className="flex justify-between">
-              <div className="flex items-center gap-2">
-                <AiOutlineFileText />
-                <span>Invoices</span>
-              </div>
-              <BiChevronDown
-                className={`w-7 h-7 ${
-                  expandKey === 1 && "rotate-[-180deg]"
-                } transition-all duration-150`}
-              />
-            </div>
-          </div>
-
-          <div
-            className={`w-full subMenu ${expandKey === 1 && "subMenuActive"}`}
-          >
-            <div
-              className={`childElement subMenuElement ${
-                activeItem === 1 && "activeChild"
-              }`}
-              onClick={() => {
-                setActiveItem(1);
-                router.push("/dashboard");
-              }}
-            >
-              <div>
-                <span>1 Invoices</span>
-              </div>
-            </div>
-            <div
-              className={`childElement subMenuElement ${
-                activeItem === 2 && "activeChild"
-              }`}
-              onClick={() => {
-                setActiveItem(2);
-                router.push("/dashboard/sales");
-              }}
-            >
-              <div>
-                <span>2 Invoices</span>
-              </div>
-            </div>
-            <div
-              className={`childElement subMenuElement ${
-                activeItem === 3 && "activeChild"
-              }`}
-              onClick={() => {
-                setActiveItem(3);
-                router.push("/dashboard/sales23");
-              }}
-            >
-              <div>
-                <span>3 Invoices</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="sidebarElement">
-            <div>
-              <BsGraphUp />
-              <span>Analytics</span>
-            </div>
-          </div>
-          <div className="sidebarElement">
-            <div>
-              <FiLogOut />
-              <span>SignOut</span>
-            </div>
-          </div>
+          {sidebarData.map((data) => (
+            <SidebarItems
+              key={data.key}
+              sidebarData={data}
+              expandState={{ expandKey, setExpandKey }}
+              subMenuState={{ subMenuActive, setSubMenuActive }}
+              activeState={{ activeItem, setActiveItem }}
+            />
+          ))}
           {/* Items end */}
         </div>
       </div>
