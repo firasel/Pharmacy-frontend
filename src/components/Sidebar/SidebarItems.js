@@ -26,6 +26,7 @@ const SidebarItems = ({
   const variants = {
     show: {
       height: "auto",
+      scaleX: 1,
     },
     hide: {
       height: 0,

@@ -19,7 +19,7 @@ const Sidebar = () => {
   const [expandKey, setExpandKey] = useState(1);
   const [activeItem, setActiveItem] = useState(0);
   const [subMenuActive, setSubMenuActive] = useState(0);
-  const [sidebarExpand] = useRecoilState(sidebarState);
+  const [sidebarExpand, setSidebarExpand] = useRecoilState(sidebarState);
 
   const sidebarData = [
     {
@@ -105,7 +105,13 @@ const Sidebar = () => {
 
   const windowSize = useWindowSize();
   console.log(windowSize);
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (windowSize?.width < 768 && !sidebarExpand) {
+      setSidebarExpand(true);
+    } else if (windowSize?.width > 767 && sidebarExpand) {
+      setSidebarExpand(false);
+    }
+  }, [windowSize]);
 
   return (
     <motion.div
