@@ -42,14 +42,31 @@ const SidebarItems = ({
     },
   };
 
+  const sidebarVariants = {
+    contentShow: {
+      scaleX: 1,
+      originX: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+    contentHide: {
+      scaleX: 0,
+      originX: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <>
       {sidebarData?.subMenu ? (
         <>
           <div
             className={`sidebarElement sidebarSubMenuParent ${
-              sidebarExpand && "!w-14"
-            } ${expandKey === sidebarData.key && "active"}`}
+              expandKey === sidebarData.key && "active"
+            }`}
             onClick={() => {
               subMenuFunction([expandKey, setExpandKey], sidebarData.key);
               if (sidebarData.key === subMenuActive) {
@@ -70,7 +87,18 @@ const SidebarItems = ({
                 } gap-2`}
               >
                 {sidebarData.icon}
-                {!sidebarExpand && <span>{sidebarData.name}</span>}
+                <AnimatePresence>
+                  {!sidebarExpand && (
+                    <motion.span
+                      initial="contentHide"
+                      animate="contentShow"
+                      exit="contentHide"
+                      variants={sidebarVariants}
+                    >
+                      {sidebarData.name}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </div>
               {!sidebarExpand && (
                 <BiChevronDown
@@ -111,7 +139,7 @@ const SidebarItems = ({
         </>
       ) : (
         <div
-          className={`sidebarElement  ${sidebarExpand && "!w-14"} ${
+          className={`sidebarElement ${
             expandKey === sidebarData.key && "activeItem"
           }`}
           onClick={() => {
@@ -127,7 +155,18 @@ const SidebarItems = ({
             }`}
           >
             {sidebarData.icon}
-            {!sidebarExpand && <span>{sidebarData.name}</span>}
+            <AnimatePresence>
+              {!sidebarExpand && (
+                <motion.span
+                  initial="contentHide"
+                  animate="contentShow"
+                  exit="contentHide"
+                  variants={sidebarVariants}
+                >
+                  {sidebarData.name}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import React, { useState } from "react";
 import {
@@ -68,25 +69,65 @@ const Sidebar = () => {
       subMenu: false,
     },
   ];
+  const sidebarVariants = {
+    default: {
+      width: "14rem",
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        damping: 12,
+      },
+    },
+    mobile: {
+      width: "3.5rem",
+      transition: {
+        duration: 0.2,
+        type: "spring",
+        damping: 12,
+      },
+    },
+    contentShow: {
+      scaleX: 1,
+      originX: 0,
+      transition: {
+        duration: 0.4,
+      },
+    },
+    contentHide: {
+      scaleX: 0,
+      originX: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
   return (
-    <div
-      className={`h-screen bg-white pb-4 w-max ${sidebarExpand && "w-14"} ${
-        style.sidebarRoot
-      }`}
+    <motion.div
+      animate={sidebarExpand ? "mobile" : "default"}
+      variants={sidebarVariants}
+      className={`h-screen relative bg-white pb-4 ${style.sidebarRoot}`}
     >
-      <div className={`${sidebarExpand ? "w-14" : "w-56"} relative`}>
-        <div className={`fixed ${sidebarExpand ? "w-14" : "w-56"}`}>
+      <AnimatePresence>
+        <div className={`absolute w-full`}>
           {/* Logo start */}
           <div
-            className={` ${
-              sidebarExpand ? "w-14" : "w-56"
-            } logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200`}
+            className={`w-full logo flex items-center justify-center gap-2 py-5 border-b-[1px] border-gray-200`}
           >
             <Image src={logoImg} />
-            {!sidebarExpand && (
-              <span className="font-semibold font-[Poppins]">Pharmacy</span>
-            )}
+            <AnimatePresence>
+              {!sidebarExpand && (
+                <motion.span
+                  initial="contentHide"
+                  animate="contentShow"
+                  exit="contentHide"
+                  variants={sidebarVariants}
+                  className="font-semibold font-[Poppins]"
+                >
+                  Pharmacy
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
           {/* Logo end */}
 
@@ -102,8 +143,8 @@ const Sidebar = () => {
           ))}
           {/* Items end */}
         </div>
-      </div>
-    </div>
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

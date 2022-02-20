@@ -16,7 +16,7 @@ const Topbar = () => {
         <div className="flex justify-between items-center">
           <button
             onClick={() => setSidebarExpand(!sidebarExpand)}
-            className="text-2xl"
+            className="text-3xl p-1"
           >
             <RiMenuFoldLine />
           </button>
