@@ -63,9 +63,9 @@ const SidebarItems = ({
   return (
     <>
       {sidebarData?.subMenu ? (
-        <>
+        <div className="relative">
           <div
-            className={`sidebarElement sidebarSubMenuParent ${
+            className={`sidebarElement ${
               expandKey === sidebarData.key && "active"
             }`}
             onClick={() => {
@@ -78,7 +78,7 @@ const SidebarItems = ({
             }}
           >
             <div
-              className={`flex justify-between ${
+              className={`flex justify-between sidebarSubMenuParent ${
                 sidebarExpand && "!px-0 py-2 items-center"
               }`}
             >
@@ -104,7 +104,7 @@ const SidebarItems = ({
               {!sidebarExpand && (
                 <BiChevronDown
                   className={`w-7 h-7 ${
-                    subMenuActive && "rotate-[-180deg]"
+                    subMenuActive === sidebarData.key && "rotate-[-180deg]"
                   } transition-all duration-150`}
                 />
               )}
@@ -130,14 +130,14 @@ const SidebarItems = ({
                     onClick={() => sidebarControl(data.key, data.path)}
                   >
                     <div>
-                      <span>{data.name}</span>
+                      <span className="p-0 md:pl-7">{data.name}</span>
                     </div>
                   </div>
                 ))}
               </motion.div>
             )}
           </AnimatePresence>
-        </>
+        </div>
       ) : (
         <div
           className={`sidebarElement ${

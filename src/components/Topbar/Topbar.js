@@ -12,7 +12,7 @@ const Topbar = () => {
   console.log(sidebarExpand);
   return (
     <div className="w-full h-min bg-white py-3 sticky top-0 z-10">
-      <div className="px-5 relative">
+      <div className=" pl-2 pr-5 relative">
         <div className="flex justify-between items-center">
           <button
             onClick={() => setSidebarExpand(!sidebarExpand)}

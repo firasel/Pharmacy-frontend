@@ -75,17 +75,20 @@
     }
   }
   .sidebarSubMenuParent {
+    &::after {
+      display: none !important;
+    }
     ::after {
       display: none !important;
     }
   }
 
   .active {
-    > div {
+    > div:first-child {
       opacity: 1 !important;
       color: #37c3e9;
       span {
-        color: #37c3e9;
+        color: #37c3e9 !important;
       }
     }
   }
@@ -164,7 +167,7 @@
 
   .activeChild,
   .activeItem {
-    ::before {
+    &::before {
       content: "";
       width: 100%;
       height: 100%;
@@ -177,7 +180,7 @@
       transform-origin: left;
       transition: all 0.2s;
     }
-    ::after {
+    &::after {
       content: "";
       width: 5px;
       height: 100%;
@@ -190,18 +193,12 @@
       transform-origin: right;
       transition: all 0.2s;
     }
-    > div {
+    > div:first-child {
       opacity: 1 !important;
       color: #37c3e9;
       span {
         color: #37c3e9;
       }
-    }
-  }
-
-  .subMenuElement {
-    > div > span {
-      padding-left: 26px;
     }
   }
 
@@ -222,7 +219,7 @@
     width: auto;
     left: 3.8rem;
     background: #edfffe;
-    bottom: 0rem;
+    top: 1rem;
     overflow: unset;
     &::after {
       content: "";

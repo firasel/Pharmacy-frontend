@@ -7,6 +7,7 @@ import {
   AiOutlineUser
 } from "react-icons/ai";
 import { BsGraphUp } from "react-icons/bs";
+import { FaCapsules } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { useRecoilState } from "recoil";
 import logoImg from "../../assets/icons/logo.svg";
@@ -53,6 +54,24 @@ const Sidebar = () => {
           key: 3,
           name: "3 Invoices",
           path: "/dashboard/sales1",
+        },
+      ],
+      subMenu: true,
+    },
+    {
+      key: 6,
+      icon: <FaCapsules />,
+      name: "Medicines",
+      subMenuData: [
+        {
+          key: 4,
+          name: "Add Medicine",
+          path: "/dashboard/medicine/add",
+        },
+        {
+          key: 5,
+          name: "Edit Medicine",
+          path: "/dashboard/medicine/edit",
         },
       ],
       subMenu: true,
@@ -117,10 +136,10 @@ const Sidebar = () => {
     <motion.div
       animate={sidebarExpand ? "mobile" : "default"}
       variants={sidebarVariants}
-      className={`h-screen relative bg-white pb-4 ${style.sidebarRoot}`}
+      className={`h-screen sticky top-0 bg-white pb-4 ${style.sidebarRoot}`}
     >
       <AnimatePresence>
-        <div className={`absolute w-full`}>
+        <div className={`sticky w-full`}>
           {/* Logo start */}
           <div
             className={`w-full logo flex items-center justify-center gap-2 py-3 md:py-5 border-b-[1px] border-gray-200`}
