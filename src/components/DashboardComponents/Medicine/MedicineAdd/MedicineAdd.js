@@ -43,11 +43,11 @@ const MedicineAdd = () => {
           </div>
         ))}
       </div>
-      <div>
+      <div className="mt-5">
         <table className="w-full text-center">
           <thead>
-            <tr>
-              <th>Name</th>
+            <tr className="bg-slate-100">
+              <th className="py-2">Name</th>
               <th>GenericName</th>
               <th>Dosage</th>
               <th>Strength</th>
@@ -56,8 +56,8 @@ const MedicineAdd = () => {
           </thead>
           <tbody>
             {medicineData.map((data, index) => (
-              <tr key={index}>
-                <td className="text-left">{data.name}</td>
+              <tr key={index} className={index % 2 !== 0 && "bg-gray-200"}>
+                <td className="text-left py-2 pl-3">{data.name}</td>
                 <td>{data.genericName}</td>
                 <td>{data.dosage}</td>
                 <td>{data.strength}</td>
