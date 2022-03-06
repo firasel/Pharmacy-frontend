@@ -18,6 +18,9 @@ const dropIn = {
   exit: {
     y: "100vh",
     opacity: 0,
+    transition: {
+      duration: 0.2,
+    },
   },
 };
 
@@ -44,11 +47,11 @@ const gifYouUp = {
   },
 };
 
-const Modal = ({ children, handleClose, type, style }) => {
+const Modal = ({ children, handleClose, type, style, bgStyle }) => {
   return (
-    <div
+    <motion.div
       onClick={handleClose}
-      className="absolute top-0 left-0 h-full w-full bg-black/70 flex items-center justify-center z-50"
+      className={`absolute top-0 left-0 h-full w-full bg-black/70 flex items-center justify-center z-50 ${bgStyle}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -65,7 +68,19 @@ const Modal = ({ children, handleClose, type, style }) => {
           {children}
         </motion.div>
       )}
-    </div>
+      {type === "gifYouUp" && (
+        <motion.div
+          onClick={(e) => e.stopPropagation()}
+          className={`rounded-xl flex flex-col justify-center bg-white w-full max-w-lg md:-mt-80 mx-6 ${style}`}
+          variants={gifYouUp}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+        >
+          {children}
+        </motion.div>
+      )}
+    </motion.div>
   );
 };
 

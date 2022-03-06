@@ -3,7 +3,7 @@ import MedicineAdd from "../../../components/DashboardComponents/Medicine/Medici
 
 const Add = () => {
   return (
-    <div className="pageStyle">
+    <div className="pageStyle relative">
       <MedicineAdd />
     </div>
   );

@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }) => {
           <div className="dashboardChild">
             <div className="flex w-full">
               <Sidebar />
-              <div className="w-full">
+              <div className="w-full relative overflow-auto">
                 <Topbar />
                 {children}
               </div>
