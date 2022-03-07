@@ -1,4 +1,4 @@
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import {
   RiAddCircleFill,
@@ -24,6 +24,7 @@ const MedicineAdd = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [btnDisable, setBtnDisable] = useState(false);
 
+  // Load medicine data from api
   useEffect(() => {
     API.get("/medicine/get")
       .then((res) => {
@@ -34,6 +35,7 @@ const MedicineAdd = () => {
       .catch((err) => console.log(err));
   }, []);
 
+  // Medicine add in global state
   const handleMedicineAdd = (data) => {
     const { name, genericName, dosage, strength, manufacturer } = data;
     const medicineObj = {
@@ -49,9 +51,9 @@ const MedicineAdd = () => {
     setMedicines([...medicines, medicineObj]);
   };
 
+  // Current window size custom hook
   const windowSize = useWindowSize()?.width;
-  console.log(windowSize);
-
+  // Layout responsive design depend on screen size
   useEffect(() => {
     if (windowSize < 768) {
       setTableFormat(true);
@@ -61,6 +63,29 @@ const MedicineAdd = () => {
     }
   }, [windowSize]);
 
+  const variants = {
+    initial: {
+      opacity: 0,
+      y: 100,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.2,
+        damping: 13,
+        type: "spring",
+      },
+    },
+    hide: {
+      opacity: 0,
+      y: 100,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <>
       <AnimatePresence>
@@ -68,9 +93,7 @@ const MedicineAdd = () => {
           <Modal
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
-            bgStyle={
-              "bg-black/60 !items-start min-h-[99vh] h-full z-[1]"
-            }
+            bgStyle={"bg-black/60 !items-start min-h-[99vh] h-full z-[1]"}
             style={"max-w-xl !mt-14 md:mt- mx-3 sm:mx-6 mb-8"}
           >
             <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>
@@ -116,43 +139,69 @@ const MedicineAdd = () => {
             </button>
           </div>
         </div>
-        {selectedMedicineShow && <SelectedMedicine />}
-        {!selectedMedicineShow &&
-          (tableFormat ? (
-            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 px-2 sm:px-0 gap-y-3 sm:gap-5 justify-between h-auto pb-4">
-              {medicineData?.map((data, index) => (
-                <MedicineCard
-                  data={data}
-                  handleMedicineAdd={handleMedicineAdd}
-                  key={index}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-5 hidden md:block">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-slate-100 text-lg font-[Lato] text-left">
-                    <th className="py-2 pl-3">Name</th>
-                    <th>Generic Name</th>
-                    <th>Dosage</th>
-                    <th>Strength</th>
-                    <th>Manufacturer</th>
-                    <th className="text-center pr-3">Manage</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {medicineData.map((data, index) => (
-                    <MedicineList
-                      data={data}
-                      handleMedicineAdd={handleMedicineAdd}
-                      key={index}
-                    />
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+
+        <div className="overflow-hidden">
+          {selectedMedicineShow && (
+            <motion.div
+              initial="initial"
+              animate="show"
+              exit="hide"
+              variants={variants}
+            >
+              <SelectedMedicine />
+            </motion.div>
+          )}
+          {!selectedMedicineShow &&
+            (tableFormat ? (
+              <motion.div
+                initial="initial"
+                animate="show"
+                exit="hide"
+                variants={variants}
+                className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 px-2 sm:px-0 gap-y-3 sm:gap-5 justify-between h-auto pb-4"
+              >
+                {medicineData?.map((data, index) => (
+                  <MedicineCard
+                    data={data}
+                    handleMedicineAdd={handleMedicineAdd}
+                    key={index}
+                  />
+                ))}
+              </motion.div>
+            ) : (
+              <AnimatePresence>
+                <motion.div
+                  initial="initial"
+                  animate="show"
+                  exit="hide"
+                  variants={variants}
+                  className="mt-5 hidden md:block"
+                >
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-slate-100 text-lg font-[Lato] text-left">
+                        <th className="py-2 pl-3">Name</th>
+                        <th>Generic Name</th>
+                        <th>Dosage</th>
+                        <th>Strength</th>
+                        <th>Manufacturer</th>
+                        <th className="text-center pr-3">Manage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {medicineData.map((data, index) => (
+                        <MedicineList
+                          data={data}
+                          handleMedicineAdd={handleMedicineAdd}
+                          key={index}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </motion.div>
+              </AnimatePresence>
+            ))}
+        </div>
       </div>
     </>
   );
