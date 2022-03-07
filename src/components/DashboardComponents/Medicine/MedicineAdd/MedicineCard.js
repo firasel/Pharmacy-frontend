@@ -8,6 +8,7 @@ import MedicineAddForm from "./MedicineAddForm";
 const MedicineCard = ({ data, handleMedicineAdd }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
+  // Scroll top function
   const bodyScrollControl = () => {
     window?.scrollTo({ top: 0, behavior: "auto" });
   };
@@ -19,7 +20,7 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
           <Modal
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
-            bgStyle={"bg-black/60 overflow-hidden !items-start"}
+            bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
             style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
           >
             <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>

@@ -186,7 +186,7 @@ const MedicineAddForm = ({ data, handleClose }) => {
           {loading ? (
             <Loading containerStyle={"py-[2px]"} dotStyle={"!bg-[#37c3e9] "} />
           ) : (
-            "Submit"
+            "Add Medicine"
           )}
         </button>
       </form>
