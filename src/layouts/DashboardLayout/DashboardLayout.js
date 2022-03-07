@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useRecoilState } from "recoil";
 import { loggedInState } from "../../atoms/authenticationAtom";
 import Sidebar from "../../components/Sidebar/Sidebar";
@@ -26,7 +28,10 @@ const DashboardLayout = ({ children }) => {
               <Sidebar />
               <div className="w-full relative overflow-auto">
                 <Topbar />
-                {children}
+                <div>
+                  <ToastContainer className="toastCustomStyle" />
+                  {children}
+                </div>
               </div>
             </div>
           </div>

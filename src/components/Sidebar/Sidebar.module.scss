@@ -221,6 +221,7 @@
     background: #edfffe;
     top: 1rem;
     overflow: unset;
+    z-index: 1;
     &::after {
       content: "";
       width: 0.6rem;

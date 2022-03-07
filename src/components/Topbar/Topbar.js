@@ -10,8 +10,8 @@ import { sidebarState } from "../../atoms/sidebarAtom";
 const Topbar = () => {
   const [sidebarExpand, setSidebarExpand] = useRecoilState(sidebarState);
   return (
-    <div className="w-full h-min bg-white py-3 sticky top-0 left-0 z-10">
-      <div className=" pl-2 pr-5 relative">
+    <div className="w-full h-min bg-white py-3 sticky top-0 right-0 z-10">
+      <div className="pl-2 pr-5 relative">
         <div className="flex justify-between items-center">
           <button
             onClick={() => setSidebarExpand(!sidebarExpand)}

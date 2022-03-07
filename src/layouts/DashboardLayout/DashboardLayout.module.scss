@@ -1,4 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+
 .dashboardContainer :global {
+  --primary: #369fea;
+  --primary-dark: #2b8cda;
+  --secondary: #212840;
+  --dark: #2b3044;
+  --grey-dark: #404660;
+  --grey: #8a91b4;
+  --grey-light: #a6accd;
+  --light: #bbc1e1;
+  --red: #c73b47;
+
   background: #fbfbfb;
   position: relative;
   width: 100%;
@@ -28,6 +41,93 @@
       z-index: 100;
       animation-name: openPageAnimation;
       animation-duration: 500ms;
+    }
+  }
+  .inputStyle {
+    position: relative;
+    label {
+      pointer-events: none;
+      font-family: "Lato";
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.5;
+      position: absolute;
+      top: 8px;
+      left: 0;
+      transform-origin: 0 50%;
+      transform: translateY(var(--label-y, 0)) scale(var(--label-scale, 1))
+        translateZ(0);
+      transition: transform 0.3s, color 0.3s;
+      color: var(--label-color, var(--grey));
+    }
+    input {
+      width: 100%;
+      border-radius: 0;
+      -webkit-appearance: none;
+      &:not(:placeholder-shown),
+      &:focus {
+        & + label {
+          --label-y: -27px;
+          --label-scale: 0.9;
+          --label-color: var(--grey-dark);
+        }
+      }
+    }
+    &.inputStyle {
+      margin-bottom: 1.6rem;
+      input {
+        background: none;
+        outline: none;
+        border: none;
+        color: var(--grey-dark);
+        font-weight: 500;
+        font-family: "Roboto";
+        font-size: 16px;
+        letter-spacing: 0.025em;
+        line-height: 22px;
+        caret-color: var(--primary);
+        padding: 6px 0 5px 0;
+        box-shadow: inset 0 -1px 0 0 var(--grey);
+      }
+    }
+  }
+  .errorText {
+    font-size: 14px;
+    font-family: "Lato";
+    margin-top: 5px;
+    margin-bottom: 0;
+    text-align: start;
+    color: var(--red);
+    letter-spacing: 0.4px;
+  }
+  .errInputStyle {
+    input {
+      box-shadow: inset 0 -1px 0 0 var(--red) !important;
+    }
+    label {
+      color: var(--red) !important;
+    }
+  }
+  .toastCustomStyle {
+    top: 5rem !important;
+  }
+  @media screen and (max-width: 767px) {
+    .toastCustomStyle {
+      width: fit-content;
+      top: 3rem !important;
+      right: -1.2rem !important;
+      left: inherit;
+      transform: scale(0.8);
+    }
+    .errorText {
+      font-size: 12px;
+      margin-top: 3px;
+      letter-spacing: 0.1px;
+    }
+    .inputStyle {
+      label {
+        white-space: nowrap;
+      }
     }
   }
 }

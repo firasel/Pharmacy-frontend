@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import API from "../../../api/AxiosInstance";
+import Loading from "../../../SharedComponents/Loading/Loading";
 
 const ShopCreateForm = ({
   animation,
@@ -110,15 +111,7 @@ const ShopCreateForm = ({
         )}
       </div>
       <button onClick={handleSubmit(shopFormHandler)} className="formBtn">
-        {isLoading === 2 ? (
-          <div className="loading">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        ) : (
-          "Create store"
-        )}
+        {isLoading === 2 ? <Loading /> : "Create store"}
       </button>
     </div>
   );

@@ -136,7 +136,7 @@ const Sidebar = () => {
     <motion.div
       animate={sidebarExpand ? "mobile" : "default"}
       variants={sidebarVariants}
-      className={`h-screen sticky top-0 bg-white pb-4 ${style.sidebarRoot}`}
+      className={`h-screen z-10 sticky top-0 bg-white pb-4 ${style.sidebarRoot}`}
     >
       <AnimatePresence>
         <div className={`sticky w-full`}>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
 import API from "../../api/AxiosInstance";
 import { modalState } from "../../atoms/modalAtom";
+import Loading from "../../SharedComponents/Loading/Loading";
 import SigninFormSchema from "./SigninFormSchema";
 
 const SigninForm = ({
@@ -87,15 +88,7 @@ const SigninForm = ({
         <button>Forgot Password?</button>
       </div>
       <button onClick={handleSubmit(onSubmit)} className="formBtn">
-        {isLoading === 2 ? (
-          <div className="loading">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        ) : (
-          "Sign in"
-        )}
+        {isLoading === 2 ? <Loading /> : "Sign in"}
       </button>
       <div className="linkText">
         Don't have an account?
