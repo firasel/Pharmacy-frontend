@@ -5,7 +5,7 @@ import API from "../../../../api/AxiosInstance";
 import ErrorToast from "../../../../helper/ErrorToast";
 import SuccessToast from "../../../../helper/SuccessToast";
 import Loading from "../../../../SharedComponents/Loading/Loading";
-import MedicineFormSchema from "../MedicineFormSchema";
+import MedicineFormSchema from "./MedicineFormSchema";
 
 const MedicineAddForm = ({ data, handleClose }) => {
   const validationOpt = { resolver: yupResolver(MedicineFormSchema) };

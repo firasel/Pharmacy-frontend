@@ -37,13 +37,9 @@ const MedicineAdd = () => {
 
   // Medicine add in global state
   const handleMedicineAdd = (data) => {
-    const { name, genericName, dosage, strength, manufacturer } = data;
+    const { active, ...medicineData } = data;
     const medicineObj = {
-      name,
-      genericName,
-      dosage,
-      strength,
-      manufacturer,
+      ...medicineData,
       qtyOfPacket: 0,
       qtyOfMedicine: 0,
       medicineShelf: "",
