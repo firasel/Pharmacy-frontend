@@ -1,14 +1,27 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { addMedicineState } from "../../../../atoms/medicineAtom";
+import MedicineFormSchema from "./MedicineFormSchema";
 import SelectedMedicineRow from "./SelectedMedicineRow";
 
 const SelectedMedicine = () => {
   const [medicines, setMedicines] = useRecoilState(addMedicineState);
   console.log(medicines);
 
+  const handleSubmit = async () => {
+    let validate = await medicines.forEach(async (data) => {
+      console.log(data);
+      let resPonse = await MedicineFormSchema.validate(data)
+        .then((res) => {
+          console.log(true);
+          return true;
+        })
+        .catch((err) => console.log(err.message));
+    });
+  };
+
   return (
-    <div className="px-2 py-2">
+    <div className="py-2">
       {medicines?.length ? (
         <div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-between gap-0 md:gap-2 font-[Lato] px-2 py-2 border-b-[1px] border-gray-300 bg-gray-300 transition-all duration-200 text-sm md:text-base md:font-semibold">
@@ -30,7 +43,10 @@ const SelectedMedicine = () => {
             <button className="py-2 px-5 font-semibold font-[Lato] bg-gray-200 rounded-md">
               cancle
             </button>
-            <button className="py-2 px-5 font-semibold font-[Lato] bg-gray-200 rounded-md">
+            <button
+              onClick={handleSubmit}
+              className="py-2 px-5 font-semibold font-[Lato] bg-gray-200 rounded-md"
+            >
               Add
             </button>
           </div>

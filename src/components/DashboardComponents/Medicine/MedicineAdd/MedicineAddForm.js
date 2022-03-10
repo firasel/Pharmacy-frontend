@@ -8,8 +8,10 @@ import Loading from "../../../../SharedComponents/Loading/Loading";
 import MedicineFormSchema from "./MedicineFormSchema";
 
 const MedicineAddForm = ({ data, handleClose }) => {
-  const validationOpt = { resolver: yupResolver(MedicineFormSchema) };
+  // State for loading show
   const [loading, setLoading] = useState(false);
+  // Yup validation schema
+  const validationOpt = { resolver: yupResolver(MedicineFormSchema) };
   // React hook form
   const {
     register,
@@ -19,6 +21,7 @@ const MedicineAddForm = ({ data, handleClose }) => {
     formState: { errors },
   } = useForm(validationOpt);
 
+  // Handle form reset
   const formReset = () => {
     reset({
       name: "",
