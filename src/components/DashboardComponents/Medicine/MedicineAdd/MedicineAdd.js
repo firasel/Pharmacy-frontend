@@ -37,14 +37,16 @@ const MedicineAdd = () => {
 
   // Medicine add in global state
   const handleMedicineAdd = (data) => {
-    const { active, ...medicineData } = data;
-    const medicineObj = {
-      ...medicineData,
-      qtyOfPacket: 0,
-      qtyOfMedicine: 0,
-      medicineShelf: "",
-    };
-    setMedicines([...medicines, medicineObj]);
+    if (!medicines?.find((medicine) => medicine._id == data._id)) {
+      const { active, ...medicineData } = data;
+      const medicineObj = {
+        ...medicineData,
+        qtyOfPacket: 0,
+        qtyOfMedicine: 0,
+        medicineShelf: "",
+      };
+      setMedicines([...medicines, medicineObj]);
+    }
   };
 
   // Current window size custom hook

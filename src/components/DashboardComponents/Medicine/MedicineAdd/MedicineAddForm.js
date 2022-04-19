@@ -40,7 +40,6 @@ const MedicineAddForm = ({ data, handleClose }) => {
     setLoading(true);
     API.post("/store/medicine/add", data, { withCredentials: true })
       .then((res) => {
-        console.log(res?.data?.data);
         setLoading(false);
         if (res?.data?.status) {
           formReset();
