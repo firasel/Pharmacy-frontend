@@ -1,23 +1,16 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { addMedicineState } from "../../../../atoms/medicineAtom";
-import MedicineFormSchema from "./MedicineFormSchema";
 import SelectedMedicineRow from "./SelectedMedicineRow";
+import SelectedMedicineSchema from "./SelectedMedicineSchema";
 
 const SelectedMedicine = () => {
   const [medicines, setMedicines] = useRecoilState(addMedicineState);
-  console.log(medicines);
 
-  const handleSubmit = async () => {
-    let validate = await medicines.forEach(async (data) => {
-      console.log(data);
-      let resPonse = await MedicineFormSchema.validate(data)
-        .then((res) => {
-          console.log(true);
-          return true;
-        })
-        .catch((err) => console.log(err.message));
-    });
+  const handleSubmit = () => {
+    SelectedMedicineSchema.validate(medicines)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -34,8 +27,7 @@ const SelectedMedicine = () => {
               <div>Qty Of Packet</div>
               <div>Qty Of Medicine</div>
               <div>MedicineShelf</div>
-              <div className="lg:w-5 xl:w-10">
-              </div>
+              <div className="lg:w-5 xl:w-10"></div>
             </div>
           </div>
           {medicines.map((data, index) => (
