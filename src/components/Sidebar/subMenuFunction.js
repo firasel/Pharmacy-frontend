@@ -3,5 +3,4 @@ export default function subMenuFunction(state, currentKey) {
   if (expandKey !== currentKey) {
     setExpandKey(currentKey);
   }
-  console.log(expandKey);
 }

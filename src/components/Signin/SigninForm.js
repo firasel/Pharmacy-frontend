@@ -46,7 +46,6 @@ const SigninForm = ({
       .then((res) => {
         setIsLoading(1);
         setLoginSuccess(true);
-        console.log(res.data);
         AnimationController.play();
       })
       .catch((err) => {

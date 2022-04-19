@@ -60,7 +60,6 @@ const ShopCreateForm = ({
 
       API.post("/store/add", data)
         .then((res) => {
-          console.log(res?.data?.data);
           setIsLoading(1);
           setSignUpDone(true);
           AnimationController.play();

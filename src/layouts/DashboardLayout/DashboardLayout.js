@@ -48,6 +48,5 @@ const DashboardLayout = ({ children }) => {
 export default DashboardLayout;
 
 export async function getServerSideProps({ req, res }) {
-  console.log("Server side rendering");
   return {};
 }

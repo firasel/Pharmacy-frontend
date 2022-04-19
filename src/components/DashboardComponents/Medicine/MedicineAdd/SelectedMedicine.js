@@ -24,7 +24,7 @@ const SelectedMedicine = () => {
     <div className="py-2">
       {medicines?.length ? (
         <div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-between gap-0 md:gap-2 font-[Lato] px-2 py-2 border-b-[1px] border-gray-300 bg-gray-300 transition-all duration-200 text-sm md:text-base md:font-semibold">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-between gap-0 md:gap-2 font-[Lato] px-2 py-2 border-b-[1px] border-gray-300 bg-gray-300 transition-all duration-200  text-sm md:text-base font-semibold">
             <div className="py-[1px] md:py-2">Name</div>
             <div className="py-[1px] md:py-2">Generic Name</div>
             <div className="py-[1px] md:py-2">Dosage</div>
@@ -34,6 +34,8 @@ const SelectedMedicine = () => {
               <div>Qty Of Packet</div>
               <div>Qty Of Medicine</div>
               <div>MedicineShelf</div>
+              <div className="lg:w-5 xl:w-10">
+              </div>
             </div>
           </div>
           {medicines.map((data, index) => (

@@ -50,7 +50,6 @@ const UserSignupForm = ({ completeState, loadingState }) => {
     data.role = "admin";
     API.post("/user/signup", data)
       .then((res) => {
-        console.log(res.data);
         const { email, _id } = res?.data?.data;
         localStorage.setItem("user", JSON.stringify({ id: _id, email }));
         setIsLoading(1);

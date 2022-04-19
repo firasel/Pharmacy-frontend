@@ -123,7 +123,6 @@ const Sidebar = () => {
   };
 
   const windowSize = useWindowSize();
-  console.log(windowSize);
   useEffect(() => {
     if (windowSize?.width < 768 && !sidebarExpand) {
       setSidebarExpand(true);

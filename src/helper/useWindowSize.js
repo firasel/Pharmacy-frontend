@@ -10,7 +10,6 @@ export default function useWindowSize() {
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
-      console.log("Run function");
       // Set window width/height to state
       setWindowSize({
         width: window.innerWidth,
@@ -22,8 +21,6 @@ export default function useWindowSize() {
     window.addEventListener("resize", handleResize);
     // Call handler for update the initial window size
     handleResize();
-    console.log("Run useeffect");
-
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize);
   }, []);
