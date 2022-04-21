@@ -1,16 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
+import API from "../../../../api/AxiosInstance";
 import { addMedicineState } from "../../../../atoms/medicineAtom";
+import ErrorToast from "../../../../helper/ErrorToast";
+import SuccessToast from "../../../../helper/SuccessToast";
+import Loading from "../../../../SharedComponents/Loading/Loading";
 import SelectedMedicineRow from "./SelectedMedicineRow";
 import SelectedMedicineSchema from "./SelectedMedicineSchema";
 
 const SelectedMedicine = () => {
+  // State for loading show
+  const [loading, setLoading] = useState(false);
+  // Medicine global state
   const [medicines, setMedicines] = useRecoilState(addMedicineState);
 
+  // Handle selected medicine add in shop
   const handleSubmit = () => {
     SelectedMedicineSchema.validate(medicines)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((data) => {
+        setLoading(true);
+        console.log({ medicines: data });
+        API.post(
+          "/store/medicine/add/all",
+          { medicines: data },
+          { withCredentials: true }
+        )
+          .then((res) => {
+            setLoading(false);
+            if (res?.data?.status) {
+              SuccessToast("Medicines successfully added.");
+              setMedicines([]);
+            } else {
+              ErrorToast();
+            }
+          })
+          .catch((err) => {
+            ErrorToast();
+            setLoading(false);
+          });
+      })
+      .catch((err) => ErrorToast("Please provide valid data!"));
   };
 
   return (
@@ -35,13 +64,20 @@ const SelectedMedicine = () => {
           ))}
           <div className="flex gap-2 justify-end my-4">
             <button className="py-2 px-5 font-semibold font-[Lato] bg-gray-200 rounded-md">
-              cancle
+              Cancle
             </button>
             <button
               onClick={handleSubmit}
               className="py-2 px-5 font-semibold font-[Lato] bg-gray-200 rounded-md"
             >
-              Add
+              {loading ? (
+                <Loading
+                  containerStyle={"py-[1px]"}
+                  dotStyle={"!bg-[#37c3e9] "}
+                />
+              ) : (
+                "Add All Medicine"
+              )}
             </button>
           </div>
         </div>

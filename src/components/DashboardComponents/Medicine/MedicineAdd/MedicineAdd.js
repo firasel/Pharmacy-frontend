@@ -37,10 +37,11 @@ const MedicineAdd = () => {
 
   // Medicine add in global state
   const handleMedicineAdd = (data) => {
-    if (!medicines?.find((medicine) => medicine._id == data._id)) {
-      const { active, ...medicineData } = data;
+    if (!medicines?.find((medicine) => medicine.ref_id == data._id)) {
+      const { active, _id, ...medicineData } = data;
       const medicineObj = {
         ...medicineData,
+        ref_id: _id,
         qtyOfPacket: 0,
         qtyOfMedicine: 0,
         medicineShelf: "",
@@ -106,18 +107,25 @@ const MedicineAdd = () => {
         <div className="mb-1 px-2 sm:px-0 md:mb-4 flex justify-between">
           <h4 className="text-xl">Add Medicine</h4>
           <div className="flex gap-3 pr-2 md:pr-0">
-            <button
-              onClick={() => setTableFormat(!tableFormat)}
-              className="h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative"
-              title={tableFormat ? "Table Layout" : "Grid Layout"}
-              disabled={btnDisable}
-            >
-              {tableFormat ? (
-                <RiTableFill className="text-2xl md:text-3xl" />
-              ) : (
-                <RiLayoutGridFill className="text-2xl md:text-3xl" />
-              )}
-            </button>
+            {!btnDisable && (
+              <button
+                onClick={() => {
+                  setTableFormat(!tableFormat);
+                  setSelectedMedicineShow(false);
+                }}
+                className={`h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative ${
+                  !selectedMedicineShow && "bg-gray-200"
+                }`}
+                title={tableFormat ? "Table Layout" : "Grid Layout"}
+                disabled={btnDisable}
+              >
+                {tableFormat ? (
+                  <RiTableFill className="text-2xl md:text-3xl" />
+                ) : (
+                  <RiLayoutGridFill className="text-2xl md:text-3xl" />
+                )}
+              </button>
+            )}
             <button
               onClick={() => setModalOpen(!modalOpen)}
               className="h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative"
@@ -127,7 +135,9 @@ const MedicineAdd = () => {
             </button>
             <button
               onClick={() => setSelectedMedicineShow(!selectedMedicineShow)}
-              className="h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative"
+              className={`h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative ${
+                selectedMedicineShow && "bg-gray-300"
+              }`}
               title="Add Selected Medicine"
             >
               <RiShoppingBasketFill className="text-2xl md:text-3xl" />
@@ -138,7 +148,7 @@ const MedicineAdd = () => {
           </div>
         </div>
 
-        <div className="overflow-hidden">
+        <div>
           {selectedMedicineShow && (
             <motion.div
               initial="initial"

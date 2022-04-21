@@ -18,7 +18,7 @@ const SelectedMedicineRow = ({ data }) => {
 
   const handleShelf = (e, id, key) => {
     const editData = medicines.map((medicineData) => {
-      if (medicineData._id == id) {
+      if (medicineData.ref_id == id) {
         let changedObject = { ...medicineData };
         switch (key) {
           case "QtyOfPacket":
@@ -40,7 +40,7 @@ const SelectedMedicineRow = ({ data }) => {
 
   // Handle selected medicine item delete
   const handleItemDelete = (id) => {
-    const filterData = medicines.filter((data) => data._id !== id);
+    const filterData = medicines.filter((data) => data.ref_id !== id);
     setMedicines(filterData);
   };
 
@@ -57,8 +57,8 @@ const SelectedMedicineRow = ({ data }) => {
             className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
             type="number"
             min={1}
-            defaultValue={data?.qtyOfPacket}
-            onChange={(e) => handleShelf(e, data?._id, "QtyOfPacket")}
+            value={data?.qtyOfPacket}
+            onChange={(e) => handleShelf(e, data?.ref_id, "QtyOfPacket")}
             title="Number of packets in a box"
           />
         </div>
@@ -67,8 +67,8 @@ const SelectedMedicineRow = ({ data }) => {
             className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
             type="number"
             min={1}
-            defaultValue={data?.qtyOfMedicine}
-            onChange={(e) => handleShelf(e, data?._id, "QtyOfMedicine")}
+            value={data?.qtyOfMedicine}
+            onChange={(e) => handleShelf(e, data?.ref_id, "QtyOfMedicine")}
             title="Number of medicines in a packet"
           />
         </div>
@@ -76,14 +76,14 @@ const SelectedMedicineRow = ({ data }) => {
           <input
             className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
             type="text"
-            defaultValue={data?.medicineShelf}
-            onChange={(e) => handleShelf(e, data?._id, "MedicineShelf")}
+            value={data?.medicineShelf}
+            onChange={(e) => handleShelf(e, data?.ref_id, "MedicineShelf")}
             placeholder="Shelf"
             title="Medicine Shelf"
           />
         </div>
         <div
-          onClick={() => handleItemDelete(data?._id)}
+          onClick={() => handleItemDelete(data?.ref_id)}
           className="p-2 bg-red-100 rounded cursor-pointer hover:text-red-600 hover:bg-slate-100 transition-all duration-200"
         >
           <RiDeleteBin6Line size={22} />
