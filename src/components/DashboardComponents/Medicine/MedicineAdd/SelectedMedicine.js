@@ -39,7 +39,9 @@ const SelectedMedicine = () => {
             setLoading(false);
           });
       })
-      .catch((err) => ErrorToast("Please provide valid data!"));
+      .catch((err) => {
+        ErrorToast(err?.message || "Please provide valid data!")
+      });
   };
 
   return (
