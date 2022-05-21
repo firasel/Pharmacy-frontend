@@ -2,23 +2,37 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { RiLayoutGridFill, RiTableFill } from "react-icons/ri";
 import API from "../../../../api/AxiosInstance";
-import MedicineList from "../MedicineAdd/MedicineList";
+import useWindowSize from "../../../../helper/useWindowSize";
 import MedicineCard from "./MedicineCard";
+import MedicineList from "./MedicineList";
 
 const MedicineEdit = () => {
   const [medicineData, setMedicineData] = useState([]);
-  const [tableFormat, setTableFormat] = useState(false);
+  const [tableFormat, setTableFormat] = useState(true);
+  const [btnDisable, setBtnDisable] = useState(false);
 
-  // Load medicine data from api
+  // Load only store medicine data from api
   useEffect(() => {
-    API.get("/store/medicine/get?page=1&limit=20", { withCredentials: true })
+    API.get("/store/medicine/get?page=2&limit=5", { withCredentials: true })
       .then((res) => {
         if (res.status === 200 && res.data.status && res?.data?.data) {
-          setMedicineData([...res?.data?.data].slice(0, 25));
+          setMedicineData(res?.data?.data);
         }
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // Current window size custom hook
+  const windowSize = useWindowSize()?.width;
+  // Layout responsive design depend on screen size
+  useEffect(() => {
+    if (windowSize < 768) {
+      setTableFormat(true);
+      setBtnDisable(true);
+    } else {
+      setBtnDisable(false);
+    }
+  }, [windowSize]);
 
   const variants = {
     initial: {
@@ -49,20 +63,21 @@ const MedicineEdit = () => {
         <div className="mb-1 px-2 sm:px-0 md:mb-4 flex justify-between">
           <h4 className="text-xl">Edit Medicine</h4>
           <div className="flex gap-3 pr-2 md:pr-0">
-            {
-              <button
+            {!btnDisable &&
+              (<button
                 onClick={() => {
                   setTableFormat(!tableFormat);
                 }}
                 className={`h-fit md:h-auto py-2 px-2 bg-gray-100 hover:bg-gray-200 transition-all duration-300 rounded relative`}
                 title={tableFormat ? "Table Layout" : "Grid Layout"}
+                disabled={btnDisable}
               >
                 {tableFormat ? (
                   <RiTableFill className="text-2xl md:text-3xl" />
                 ) : (
                   <RiLayoutGridFill className="text-2xl md:text-3xl" />
                 )}
-              </button>
+              </button>)
             }
           </div>
         </div>
@@ -99,6 +114,8 @@ const MedicineEdit = () => {
                     <th>Generic Name</th>
                     <th>Dosage</th>
                     <th>Strength</th>
+                    <th>Packets</th>
+                    <th>Medicines</th>
                     <th>Manufacturer</th>
                     <th className="text-center pr-3">Manage</th>
                   </tr>
@@ -107,7 +124,7 @@ const MedicineEdit = () => {
                   {medicineData.map((data, index) => (
                     <MedicineList
                       data={data}
-                    //   handleMedicineAdd={handleMedicineAdd}
+                      //   handleMedicineAdd={handleMedicineAdd}
                       key={index}
                     />
                   ))}

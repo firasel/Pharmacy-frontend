@@ -1,6 +1,8 @@
+import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import { GrAddCircle } from "react-icons/gr";
-import { RiShoppingBasketLine } from "react-icons/ri";
+import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
+import Modal from "../../../../SharedComponents/Modal/Modal";
+import MedicineEditForm from "./MedicineEditForm";
 
 const MedicineCard = ({ data, handleMedicineAdd }) => {
   // React useState is used to control each modal
@@ -12,7 +14,7 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
 
   return (
     <>
-      {/* <AnimatePresence>
+      <AnimatePresence>
         {modalOpen && (
           <Modal
             handleClose={() => setModalOpen(false)}
@@ -20,14 +22,14 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
             bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
             style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
           >
-            <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>
-            <MedicineAddForm
+            <h2 className="text-2xl py-5 px-2 text-center">Edit Medicine</h2>
+            <MedicineEditForm
               handleClose={() => setModalOpen(false)}
               data={data}
             />
           </Modal>
         )}
-      </AnimatePresence> */}
+      </AnimatePresence>
       <div className="shadow-lg bg-white rounded-md w-full grid hover:scale-[1.02] transition-all duration-200">
         <div className="px-3 pt-3 pb-2 tracking-wide">
           <h3 className="text-xl font-semibold font-[Lato] text-gray-700">
@@ -37,7 +39,9 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
             {data?.genericName}
           </h4>
           <h4 className="text-base font-medium">{data?.dosage}</h4>
-          <h4 className="text-base font-bold font-[Lato]">{data?.strength}</h4>
+          <h4 className="text-base font-medium">Strength: {data?.strength}</h4>
+          <h4 className="text-base font-medium">Packets: {data?.qtyOfPacket}</h4>
+          <h4 className="text-base font-medium">Medicines: {data?.qtyOfMedicine}</h4>
           <h5 className="text-base">{data?.manufacturer}</h5>
         </div>
         <div className="h-fit mt-auto flex divide-x-2 hover:divide-x-0 mb-2 mx-2">
@@ -46,15 +50,17 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
               setModalOpen(!modalOpen);
               bodyScrollControl();
             }}
-            className="w-full hover:bg-gray-100 hover:rounded-md py-2 flex justify-center items-center transition-all duration-300"
+            className="w-full hover:bg-gray-100 hover:rounded-md hover:text-[#37c3e9] py-2 flex justify-center items-center transition-all duration-300"
+            title="Edit medicine details"
           >
-            <GrAddCircle className="text-2xl" />
+            <RiEdit2Line className="text-2xl" />
           </button>
           <button
             onClick={() => handleMedicineAdd(data)}
-            className="w-full hover:bg-gray-100 hover:rounded-md py-2 flex justify-center items-center transition-all duration-300"
+            className="w-full hover:bg-gray-100 hover:rounded-md hover:text-red-400 py-2 flex justify-center items-center transition-all duration-300"
+            title="Delete medicine from store"
           >
-            <RiShoppingBasketLine className="text-2xl" />
+            <RiDeleteBin6Line className="text-2xl" />
           </button>
         </div>
       </div>

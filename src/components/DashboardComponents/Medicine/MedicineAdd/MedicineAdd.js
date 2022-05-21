@@ -18,7 +18,7 @@ import SelectedMedicine from "./SelectedMedicine";
 
 const MedicineAdd = () => {
   const [medicineData, setMedicineData] = useState([]);
-  const [tableFormat, setTableFormat] = useState(false);
+  const [tableFormat, setTableFormat] = useState(true);
   const [medicines, setMedicines] = useRecoilState(addMedicineState);
   const [selectedMedicineShow, setSelectedMedicineShow] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
