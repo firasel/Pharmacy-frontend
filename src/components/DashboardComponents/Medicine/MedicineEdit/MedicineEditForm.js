@@ -7,7 +7,7 @@ import SuccessToast from "../../../../helper/SuccessToast";
 import Loading from "../../../../SharedComponents/Loading/Loading";
 import MedicineFormSchema from "../MedicineAdd/MedicineFormSchema";
 
-const MedicineEditForm = ({ data, handleClose }) => {
+const MedicineEditForm = ({ data, handleClose, setReloadData }) => {
   // State for loading show
   const [loading, setLoading] = useState(false);
   // Yup validation schema
@@ -46,6 +46,7 @@ const MedicineEditForm = ({ data, handleClose }) => {
         if (res?.data?.status) {
           formReset();
           SuccessToast("Medicine details updated.");
+          setReloadData((reload) => !reload);
           handleClose();
         } else {
           ErrorToast();

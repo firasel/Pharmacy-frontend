@@ -4,7 +4,7 @@ import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
 import Modal from "../../../../SharedComponents/Modal/Modal";
 import MedicineEditForm from "./MedicineEditForm";
 
-const MedicineList = ({ data, handleMedicineAdd }) => {
+const MedicineList = ({ data, handleMedicineDelete, setReloadData }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
   // Scroll top function
@@ -26,6 +26,7 @@ const MedicineList = ({ data, handleMedicineAdd }) => {
             <MedicineEditForm
               handleClose={() => setModalOpen(false)}
               data={data}
+              setReloadData={setReloadData}
             />
           </Modal>
         )}
@@ -50,7 +51,7 @@ const MedicineList = ({ data, handleMedicineAdd }) => {
               <RiEdit2Line className="text-2xl" />
             </button>
             <button
-              // onClick={() => handleMedicineAdd(data)}
+              onClick={() => handleMedicineDelete(data?._id)}
               className="w-full hover:bg-gray-100 hover:rounded-md  hover:text-red-400 py-2 flex justify-center items-center transition-all duration-300"
             >
               <RiDeleteBin6Line className="text-2xl" />

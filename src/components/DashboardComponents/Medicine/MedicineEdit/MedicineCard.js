@@ -4,7 +4,7 @@ import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
 import Modal from "../../../../SharedComponents/Modal/Modal";
 import MedicineEditForm from "./MedicineEditForm";
 
-const MedicineCard = ({ data, handleMedicineAdd }) => {
+const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
   // Scroll top function
@@ -26,6 +26,7 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
             <MedicineEditForm
               handleClose={() => setModalOpen(false)}
               data={data}
+              setReloadData={setReloadData}
             />
           </Modal>
         )}
@@ -40,8 +41,12 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
           </h4>
           <h4 className="text-base font-medium">{data?.dosage}</h4>
           <h4 className="text-base font-medium">Strength: {data?.strength}</h4>
-          <h4 className="text-base font-medium">Packets: {data?.qtyOfPacket}</h4>
-          <h4 className="text-base font-medium">Medicines: {data?.qtyOfMedicine}</h4>
+          <h4 className="text-base font-medium">
+            Packets: {data?.qtyOfPacket}
+          </h4>
+          <h4 className="text-base font-medium">
+            Medicines: {data?.qtyOfMedicine}
+          </h4>
           <h5 className="text-base">{data?.manufacturer}</h5>
         </div>
         <div className="h-fit mt-auto flex divide-x-2 hover:divide-x-0 mb-2 mx-2">
@@ -56,7 +61,7 @@ const MedicineCard = ({ data, handleMedicineAdd }) => {
             <RiEdit2Line className="text-2xl" />
           </button>
           <button
-            onClick={() => handleMedicineAdd(data)}
+            onClick={() => handleMedicineDelete(data?._id)}
             className="w-full hover:bg-gray-100 hover:rounded-md hover:text-red-400 py-2 flex justify-center items-center transition-all duration-300"
             title="Delete medicine from store"
           >

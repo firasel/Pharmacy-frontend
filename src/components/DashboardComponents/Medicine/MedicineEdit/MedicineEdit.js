@@ -2,6 +2,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { RiLayoutGridFill, RiTableFill } from "react-icons/ri";
 import API from "../../../../api/AxiosInstance";
+import ErrorToast from "../../../../helper/ErrorToast";
+import SuccessToast from "../../../../helper/SuccessToast";
 import useWindowSize from "../../../../helper/useWindowSize";
 import MedicineCard from "./MedicineCard";
 import MedicineList from "./MedicineList";
@@ -10,17 +12,34 @@ const MedicineEdit = () => {
   const [medicineData, setMedicineData] = useState([]);
   const [tableFormat, setTableFormat] = useState(true);
   const [btnDisable, setBtnDisable] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
 
   // Load only store medicine data from api
   useEffect(() => {
-    API.get("/store/medicine/get?page=2&limit=5", { withCredentials: true })
+    API.get("/store/medicine/get?page=1&limit=25", { withCredentials: true })
       .then((res) => {
         if (res.status === 200 && res.data.status && res?.data?.data) {
           setMedicineData(res?.data?.data);
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [reloadData]);
+
+  // Delete medicine function
+  const handleMedicineDelete = (id) => {
+    API.delete(`/store/medicine/delete/${id}`, { withCredentials: true })
+      .then((res) => {
+        if (res.status === 200 && res.data.status) {
+          SuccessToast(res?.data?.message);
+          setReloadData(!reloadData);
+        } else {
+          ErrorToast(res?.data?.message);
+        }
+      })
+      .catch((err) => {
+        ErrorToast(res?.data?.message);
+      });
+  };
 
   // Current window size custom hook
   const windowSize = useWindowSize()?.width;
@@ -63,8 +82,8 @@ const MedicineEdit = () => {
         <div className="mb-1 px-2 sm:px-0 md:mb-4 flex justify-between">
           <h4 className="text-xl">Edit Medicine</h4>
           <div className="flex gap-3 pr-2 md:pr-0">
-            {!btnDisable &&
-              (<button
+            {!btnDisable && (
+              <button
                 onClick={() => {
                   setTableFormat(!tableFormat);
                 }}
@@ -77,8 +96,8 @@ const MedicineEdit = () => {
                 ) : (
                   <RiLayoutGridFill className="text-2xl md:text-3xl" />
                 )}
-              </button>)
-            }
+              </button>
+            )}
           </div>
         </div>
 
@@ -93,7 +112,8 @@ const MedicineEdit = () => {
             {medicineData?.map((data, index) => (
               <MedicineCard
                 data={data}
-                // handleMedicineAdd={handleMedicineAdd}
+                handleMedicineDelete={handleMedicineDelete}
+                setReloadData={setReloadData}
                 key={index}
               />
             ))}
@@ -124,7 +144,8 @@ const MedicineEdit = () => {
                   {medicineData.map((data, index) => (
                     <MedicineList
                       data={data}
-                      //   handleMedicineAdd={handleMedicineAdd}
+                      handleMedicineDelete={handleMedicineDelete}
+                      setReloadData={setReloadData}
                       key={index}
                     />
                   ))}
