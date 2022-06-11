@@ -2,19 +2,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { RiLayoutGridFill, RiTableFill } from "react-icons/ri";
 import API from "../../../../api/AxiosInstance";
-import ErrorToast from "../../../../helper/ErrorToast";
-import SuccessToast from "../../../../helper/SuccessToast";
 import useWindowSize from "../../../../helper/useWindowSize";
 import MedicineCard from "./MedicineCard";
 import MedicineList from "./MedicineList";
 
-const MedicineEdit = () => {
-  const [medicineData, setMedicineData] = useState([]);
+const StockAdd = () => {
   const [tableFormat, setTableFormat] = useState(true);
   const [btnDisable, setBtnDisable] = useState(false);
-  const [reloadData, setReloadData] = useState(false);
+  const [medicineData, setMedicineData] = useState([]);
 
-  // Load only store medicine data from api
   useEffect(() => {
     API.get("/store/medicine/get?page=1&limit=25", { withCredentials: true })
       .then((res) => {
@@ -23,23 +19,7 @@ const MedicineEdit = () => {
         }
       })
       .catch((err) => console.log(err));
-  }, [reloadData]);
-
-  // Delete medicine function
-  const handleMedicineDelete = (id) => {
-    API.delete(`/store/medicine/delete/${id}`, { withCredentials: true })
-      .then((res) => {
-        if (res.status === 200 && res.data.status) {
-          SuccessToast(res?.data?.message);
-          setReloadData(!reloadData);
-        } else {
-          ErrorToast(res?.data?.message);
-        }
-      })
-      .catch((err) => {
-        ErrorToast(res?.data?.message);
-      });
-  };
+  }, []);
 
   // Current window size custom hook
   const windowSize = useWindowSize()?.width;
@@ -52,6 +32,10 @@ const MedicineEdit = () => {
       setBtnDisable(false);
     }
   }, [windowSize]);
+
+  const handleAddStock = () => {
+    
+  }
 
   const variants = {
     initial: {
@@ -80,7 +64,7 @@ const MedicineEdit = () => {
     <div>
       <div className="mt-3 md:mt-0">
         <div className="mb-1 px-2 sm:px-0 md:mb-4 flex justify-between">
-          <h4 className="text-xl">Edit Medicine</h4>
+          <h4 className="text-xl">Add Stock</h4>
           <div className="flex gap-3 pr-2 md:pr-0">
             {!btnDisable && (
               <button
@@ -112,8 +96,8 @@ const MedicineEdit = () => {
             {medicineData?.map((data, index) => (
               <MedicineCard
                 data={data}
-                handleMedicineDelete={handleMedicineDelete}
-                setReloadData={setReloadData}
+                // handleMedicineDelete={handleMedicineDelete}
+                // setReloadData={setReloadData}
                 key={index}
               />
             ))}
@@ -145,8 +129,8 @@ const MedicineEdit = () => {
                   {medicineData.map((data, index) => (
                     <MedicineList
                       data={data}
-                      handleMedicineDelete={handleMedicineDelete}
-                      setReloadData={setReloadData}
+                      // handleMedicineDelete={handleMedicineDelete}
+                      // setReloadData={setReloadData}
                       key={index}
                     />
                   ))}
@@ -160,4 +144,4 @@ const MedicineEdit = () => {
   );
 };
 
-export default MedicineEdit;
+export default StockAdd;

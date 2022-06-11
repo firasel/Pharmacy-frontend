@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
 import Modal from "../../../../SharedComponents/Modal/Modal";
-import MedicineEditForm from "./MedicineEditForm";
+import StockAddForm from "./StockAddForm";
 
 const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
   // React useState is used to control each modal
@@ -23,7 +23,7 @@ const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
             style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
           >
             <h2 className="text-2xl py-5 px-2 text-center">Edit Medicine</h2>
-            <MedicineEditForm
+            <StockAddForm
               handleClose={() => setModalOpen(false)}
               data={data}
               setReloadData={setReloadData}

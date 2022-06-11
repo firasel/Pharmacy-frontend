@@ -1,8 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiOutlineFileText,
+  AiOutlineGold,
   AiOutlineHome,
   AiOutlineUser
 } from "react-icons/ai";
@@ -54,6 +55,24 @@ const Sidebar = () => {
           key: 3,
           name: "3 Invoices",
           path: "/dashboard/sales1",
+        },
+      ],
+      subMenu: true,
+    },
+    {
+      key: 7,
+      icon: <AiOutlineGold />,
+      name: "Stock",
+      subMenuData: [
+        {
+          key: 6,
+          name: "Add Stock",
+          path: "/dashboard/stock/add",
+        },
+        {
+          key: 7,
+          name: "Edit Stock",
+          path: "/dashboard/stock/edit",
         },
       ],
       subMenu: true,
