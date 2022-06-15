@@ -1,9 +1,10 @@
+import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
+import { RiAddFill } from "react-icons/ri";
 import Modal from "../../../../SharedComponents/Modal/Modal";
 import StockAddForm from "./StockAddForm";
 
-const MedicineList = ({ data, handleMedicineDelete, setReloadData }) => {
+const MedicineList = ({ data }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
   // Scroll top function
@@ -19,14 +20,10 @@ const MedicineList = ({ data, handleMedicineDelete, setReloadData }) => {
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
             bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
-            style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
+            style={"max-w-xl !mt-28 md:!mt-48 mx-3 sm:mx-6"}
           >
-            <h2 className="text-2xl py-5 px-2 text-center">Edit Medicine</h2>
-            <StockAddForm
-              handleClose={() => setModalOpen(false)}
-              data={data}
-              setReloadData={setReloadData}
-            />
+            <h2 className="text-2xl py-5 px-2 text-center">Medicine Stock</h2>
+            <StockAddForm handleClose={() => setModalOpen(false)} data={data} />
           </Modal>
         )}
       </AnimatePresence>
@@ -47,14 +44,9 @@ const MedicineList = ({ data, handleMedicineDelete, setReloadData }) => {
                 bodyScrollControl();
               }}
               className="w-full hover:bg-gray-100 hover:rounded-md hover:text-[#37c3e9] py-2 flex justify-center items-center transition-all duration-300"
+              title="Add Stock"
             >
-              <RiEdit2Line className="text-2xl" />
-            </button>
-            <button
-              onClick={() => handleMedicineDelete(data?._id)}
-              className="w-full hover:bg-gray-100 hover:rounded-md  hover:text-red-400 py-2 flex justify-center items-center transition-all duration-300"
-            >
-              <RiDeleteBin6Line className="text-2xl" />
+              <RiAddFill className="text-2xl" />
             </button>
           </div>
         </td>

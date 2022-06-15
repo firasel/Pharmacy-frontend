@@ -1,56 +1,77 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Controller, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineClose } from "react-icons/md";
 import API from "../../../../api/AxiosInstance";
 import ErrorToast from "../../../../helper/ErrorToast";
 import SuccessToast from "../../../../helper/SuccessToast";
 import Loading from "../../../../SharedComponents/Loading/Loading";
-import StockFormSchema from "./StockFormSchema";
+import { StockFormSchema } from "./StockFormSchema";
 
-const StockAddForm = ({ data, handleClose, setReloadData }) => {
+const StockAddForm = ({ data, handleClose }) => {
   // State for loading show
   const [loading, setLoading] = useState(false);
   const [qtyOfBox, setQtyOfBox] = useState(0);
   const [qtyOfPackets, setQtyOfPackets] = useState(0);
+  const [qtyOfMedicine, setQtyOfMedicine] = useState(0);
+  const [totalMedicine, setTotalMedicine] = useState(0);
+  const [firstRender, setFirstRender] = useState(true);
+
   // Yup validation schema
   const validationOpt = { resolver: yupResolver(StockFormSchema) };
   // React hook form
   const {
     register,
     handleSubmit,
-    watch,
     reset,
+    control,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm(validationOpt);
+  register("stock", { required: true });
 
   // Handle form reset
   const formReset = () => {
     reset({
-      name: "",
-      genericName: "",
-      dosage: "",
-      strength: "",
-      manufacturer: "",
-      qtyOfPacket: "",
-      qtyOfMedicine: "",
-      medicineShelf: "",
+      buyingPrice: 0,
+      sellingPrice: 0,
+      stock: 0,
+      expireDate: new Date(),
     });
   };
 
+  useEffect(() => {
+    const stockCalculate =
+      qtyOfMedicine +
+      qtyOfBox * data?.qtyOfPacket * data?.qtyOfMedicine +
+      qtyOfPackets * data?.qtyOfMedicine;
+    setTotalMedicine(stockCalculate);
+    setValue("stock", stockCalculate);
+    if (stockCalculate < 1) {
+      !firstRender && setError("stock", { message: "Minimum stock is 1." });
+    } else {
+      clearErrors("stock");
+    }
+    setFirstRender(false);
+  }, [qtyOfMedicine, qtyOfPackets, qtyOfBox]);
+
   // Form submit function
-  const onSubmit = (updateData) => {
+  const onSubmit = (stockData) => {
     setLoading(true);
-    // Add medicine id with updated data
-    updateData._id = data._id;
-    API.put("/store/medicine/update", updateData, { withCredentials: true })
+    // Add medicine id with stock data for reference
+    stockData.medicine_id = data?._id;
+    console.log(stockData);
+    API.post("/store/medicine/stock/add", stockData, { withCredentials: true })
       .then((res) => {
         setLoading(false);
         if (res?.data?.status) {
           formReset();
-          SuccessToast("Medicine details updated.");
-          setReloadData((reload) => !reload);
+          SuccessToast("Medicine Stock Added.");
           handleClose();
         } else {
           ErrorToast();
@@ -65,83 +86,69 @@ const StockAddForm = ({ data, handleClose, setReloadData }) => {
   return (
     <div className="px-3 py-3">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={`inputStyle ${errors.name && "errInputStyle"}`}>
-          <input
-            type="text"
-            placeholder=" "
-            defaultValue={data.name}
-            name="name"
-            {...register("name")}
-          />
-          <label>Medicine name</label>
-          {errors.name && <p className="errorText">{errors.name.message}</p>}
-        </div>
-        <div className={`inputStyle ${errors.genericName && "errInputStyle"}`}>
-          <input
-            type="text"
-            placeholder=" "
-            defaultValue={data?.genericName}
-            name="genericName"
-            {...register("genericName")}
-          />
-          <label>Generic name</label>
-          {errors.genericName && (
-            <p className="errorText">{errors.genericName.message}</p>
-          )}
-        </div>
         <div className="flex gap-2 w-full">
           <div
-            className={`inputStyle w-full ${errors.dosage && "errInputStyle"}`}
-          >
-            <input
-              type="text"
-              placeholder=" "
-              defaultValue={data?.dosage}
-              name="dosage"
-              {...register("dosage")}
-            />
-            <label>Type</label>
-            {errors.dosage && (
-              <p className="errorText">{errors.dosage.message}</p>
-            )}
-          </div>
-          <div
-            className={`inputStyle w-full ${
-              errors.strength && "errInputStyle"
+            className={`inputStyle w-full !mb-0 ${
+              errors.dosage && "errInputStyle"
             }`}
           >
             <input
-              type="text"
+              type="number"
               placeholder=" "
-              defaultValue={data?.strength}
-              name="strength"
-              {...register("strength")}
+              defaultValue={0}
+              name="buyingPrice"
+              min={0}
+              {...register("buyingPrice")}
             />
-            <label>Strength</label>
-            {errors.strength && (
-              <p className="errorText">{errors.strength.message}</p>
+            <label>Buying Price</label>
+            {errors.buyingPrice && (
+              <p className="errorText">{errors.buyingPrice.message}</p>
+            )}
+          </div>
+          <div
+            className={`inputStyle w-full !mb-0 ${
+              errors.sellingPrice && "errInputStyle"
+            }`}
+          >
+            <input
+              type="number"
+              placeholder=" "
+              defaultValue={0}
+              name="sellingPrice"
+              min={0}
+              {...register("sellingPrice")}
+            />
+            <label>Selling Price</label>
+            {errors.sellingPrice && (
+              <p className="errorText">{errors.sellingPrice.message}</p>
             )}
           </div>
         </div>
-        <div className={`inputStyle ${errors.manufacturer && "errInputStyle"}`}>
-          <input
-            type="text"
-            placeholder=" "
-            defaultValue={data?.manufacturer}
-            name="manufacturer"
-            {...register("manufacturer")}
+        <div className="inputStyle">
+          <label className="!relative !text-[14.5px]">Expire Date</label>
+          <Controller
+            control={control}
+            name="expireDate"
+            render={({ field }) => {
+              field.value = field?.value || new Date();
+              return (
+                <DatePicker
+                  placeholderText="Select expire date"
+                  onChange={(date) => field.onChange(date)}
+                  minDate={new Date()}
+                  selected={field.value}
+                  className="shadow text-base"
+                  title="Month/Day/Year"
+                />
+              );
+            }}
           />
-          <label>Manufacturer</label>
-          {errors.manufacturer && (
-            <p className="errorText">{errors.manufacturer.message}</p>
+          {errors.expireDate && (
+            <p className="errorText">{errors.expireDate.message}</p>
           )}
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2 w-full">
-          <div
-            className={`inputStyle w-full mt-4 sm:mt-0 col-span-full md:col-span-1 ${
-              errors.qtyOfBox && "errInputStyle"
-            }`}
-          >
+          <div className="inputStyle w-full !mb-0">
             <input
               type="number"
               placeholder=" "
@@ -157,25 +164,25 @@ const StockAddForm = ({ data, handleClose, setReloadData }) => {
               }}
             />
             <label>Qty of Box</label>
-            {errors.qtyOfBox && (
-              <p className="errorText">{errors.qtyOfBox.message}</p>
-            )}
             <p className="py-1 px-2 bg-slate-200 rounded-md mt-2 flex items-center justify-center">
-              <span title="Box quantity">{qtyOfBox}</span>
+              <span className="cursor-pointer" title="Box quantity">
+                {qtyOfBox}
+              </span>
               <MdOutlineClose />{" "}
-              <span title="Packets in a box">{data?.qtyOfPacket}</span>{" "}
+              <span className="cursor-pointer" title="Packets in a box">
+                {data?.qtyOfPacket}
+              </span>{" "}
               <MdOutlineClose />{" "}
-              <span title="Medicines in a packet">{data?.qtyOfMedicine}</span> ={" "}
-              <span title="Total medicines">
+              <span className="cursor-pointer" title="Medicines in a packet">
+                {data?.qtyOfMedicine}
+              </span>{" "}
+              ={" "}
+              <span className="cursor-pointer" title="Total medicines">
                 {data?.qtyOfPacket * qtyOfBox * data?.qtyOfMedicine}
               </span>
             </p>
           </div>
-          <div
-            className={`inputStyle !mb-1 w-full ${
-              errors.qtyOfPacket && "errInputStyle"
-            }`}
-          >
+          <div className="inputStyle !mb-0 w-full">
             <input
               type="number"
               placeholder=" "
@@ -191,60 +198,68 @@ const StockAddForm = ({ data, handleClose, setReloadData }) => {
               }}
             />
             <label>Qty of packets</label>
-            {errors.qtyOfPacket && (
-              <p className="errorText">{errors.qtyOfPacket.message}</p>
-            )}
             <p className="py-1 px-2 bg-slate-200 rounded-md mt-2 flex items-center justify-center">
-              <span title="Packet quantity">{qtyOfPackets}</span>{" "}
+              <span className="cursor-pointer" title="Packet quantity">
+                {qtyOfPackets}
+              </span>{" "}
               <MdOutlineClose />{" "}
-              <span title="Medicines in a packet">{data?.qtyOfMedicine}</span> ={" "}
-              <span title="Total medicines">
+              <span className="cursor-pointer" title="Medicines in a packet">
+                {data?.qtyOfMedicine}
+              </span>{" "}
+              ={" "}
+              <span className="cursor-pointer" title="Total medicines">
                 {data?.qtyOfMedicine * qtyOfPackets}
               </span>
             </p>
           </div>
-          <div
-            className={`inputStyle !mb-1 w-full ${
-              errors.qtyOfMedicine && "errInputStyle"
-            }`}
-          >
+          <div className="inputStyle !mb-0 w-full col-span-full md:col-span-1 mt-5 md:mt-0">
             <input
               type="number"
               placeholder=" "
               name="qtyOfMedicine"
-              defaultValue={data?.qtyOfMedicine}
-              {...register("qtyOfMedicine")}
-              readOnly
+              value={qtyOfMedicine}
+              onChange={(e) => {
+                if (
+                  typeof parseInt(e.target.value) === "number" &&
+                  parseInt(e.target.value) >= 0
+                ) {
+                  setQtyOfMedicine(parseInt(e.target.value));
+                }
+              }}
             />
             <label>Qty of medicines</label>
-            {errors.qtyOfMedicine && (
-              <p className="errorText">{errors.qtyOfMedicine.message}</p>
-            )}
-            <p className="py-1 px-2 bg-slate-200 rounded-md mt-2 flex items-center justify-center">
-              <span title="Medicines quantity">{0}</span>
-              <AiOutlinePlus />{" "}
-              <span title="Medicines in box">
+            <p
+              className={`py-1 px-2 bg-slate-200 rounded-md mt-2 flex items-center justify-center ${
+                errors?.stock && "text-red-800 bg-red-200/70"
+              }`}
+            >
+              <span className="cursor-pointer" title="Medicines in box">
                 {qtyOfBox * data?.qtyOfPacket * data?.qtyOfMedicine}
               </span>{" "}
               <AiOutlinePlus />{" "}
-              <span title="Medicines in packet">
+              <span className="cursor-pointer" title="Medicines in packet">
                 {qtyOfPackets * data?.qtyOfMedicine}
               </span>{" "}
-              ={" "}
-              {0 +
-                qtyOfBox * data?.qtyOfPacket * data?.qtyOfMedicine +
-                qtyOfPackets * data?.qtyOfMedicine}
+              <AiOutlinePlus />
+              <span className="cursor-pointer" title="Medicines quantity">
+                {qtyOfMedicine}
+              </span>
+              =
+              <span className="cursor-pointer" title="Total medicines quantity">
+                {totalMedicine}
+              </span>
             </p>
           </div>
         </div>
+        {errors.stock && <p className="errorText">{errors.stock.message}</p>}
         <button
           type="submit"
-          className="py-[6px] px-2 bg-[#cffffd] hover:bg-[#c5fcfa] transition-all duration-300 text-[#37c3e9] w-full rounded-md font-semibold font-[Lato] tracking-wider text-lg mb-1"
+          className="py-[6px] px-2 bg-[#cffffd] hover:bg-[#c5fcfa] transition-all duration-300 text-[#37c3e9] w-full rounded-md font-semibold font-[Lato] tracking-wider text-lg mb-1 mt-4"
         >
           {loading ? (
             <Loading containerStyle={"py-[2px]"} dotStyle={"!bg-[#37c3e9] "} />
           ) : (
-            "Update Medicine"
+            "Add Stock"
           )}
         </button>
       </form>

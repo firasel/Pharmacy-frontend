@@ -122,7 +122,7 @@ const StockAdd = () => {
                     <th>Medicines</th>
                     <th>Shelf</th>
                     <th>Manufacturer</th>
-                    <th className="text-center pr-3">Manage</th>
+                    <th className="text-center pr-3">Add</th>
                   </tr>
                 </thead>
                 <tbody>
