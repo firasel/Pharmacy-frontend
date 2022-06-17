@@ -33,10 +33,6 @@ const StockAdd = () => {
     }
   }, [windowSize]);
 
-  const handleAddStock = () => {
-    
-  }
-
   const variants = {
     initial: {
       opacity: 0,

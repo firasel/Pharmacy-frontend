@@ -1,10 +1,11 @@
+import StockEdit from "../../../components/DashboardComponents/Stock/StockEdit/StockEdit";
 
 const Edit = () => {
-    return (
-        <div>
-            <h2>This is edit page</h2>
-        </div>
-    );
+  return (
+    <div className="pageStyle relative">
+      <StockEdit />
+    </div>
+  );
 };
 
 export default Edit;
