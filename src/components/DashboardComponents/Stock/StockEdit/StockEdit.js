@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import "react-day-picker/dist/style.css";
 import { RiLayoutGridFill, RiTableFill } from "react-icons/ri";
 import API from "../../../../api/AxiosInstance";
 import useWindowSize from "../../../../helper/useWindowSize";
