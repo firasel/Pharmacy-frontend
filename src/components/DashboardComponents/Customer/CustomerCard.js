@@ -1,10 +1,10 @@
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
-import Modal from "../../../../SharedComponents/Modal/Modal";
-import MedicineEditForm from "./MedicineEditForm";
+import Modal from "../../../SharedComponents/Modal/Modal";
+import MedicineAddForm from "./CustomerAddForm";
 
-const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
+const CustomerCard = ({ data, handleCustomerDelete }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
   // Scroll top function
@@ -20,13 +20,12 @@ const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
             bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
-            style={"max-w-xl mt-14 md:mt-32 mx-3 sm:mx-6"}
+            style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
           >
-            <h2 className="text-2xl py-5 px-2 text-center">Edit Medicine</h2>
-            <MedicineEditForm
+            <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>
+            <MedicineAddForm
               handleClose={() => setModalOpen(false)}
               data={data}
-              setReloadData={setReloadData}
             />
           </Modal>
         )}
@@ -36,21 +35,11 @@ const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
           <h3 className="text-xl font-semibold font-[Lato] text-gray-700">
             {data?.name}
           </h3>
-          <h4 className="text-lg text-gray-600 font-medium">
-            {data?.genericName}
-          </h4>
-          <h4 className="text-base font-medium">{data?.dosage}</h4>
-          <h4 className="text-base font-medium">Strength: {data?.strength}</h4>
-          <h4 className="text-base font-medium">
-            Packets: {data?.qtyOfPacket}
-          </h4>
-          <h4 className="text-base font-medium">
-            Medicines: {data?.qtyOfMedicine}
-          </h4>
-          <h4 className="text-base font-medium">
-            Shelf: {data?.medicineShelf}
-          </h4>
-          <h5 className="text-base">{data?.manufacturer}</h5>
+          <h4 className="text-base font-medium">{data?.phone}</h4>
+          <h4 className="text-base font-medium">{data?.address}</h4>
+          <h5 className="text-base tracking-normal leading-3 mt-1">
+            {data?.note}
+          </h5>
         </div>
         <div className="h-fit mt-auto flex divide-x-2 hover:divide-x-0 mb-2 mx-2">
           <button
@@ -59,16 +48,16 @@ const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
               bodyScrollControl();
             }}
             className="w-full hover:bg-gray-100 hover:rounded-md hover:text-[#37c3e9] py-2 flex justify-center items-center transition-all duration-300"
-            title="Edit medicine details"
+            title="Edit customer details"
           >
-            <RiEdit2Line className="text-2xl" />
+            <RiEdit2Line className="text-xl" />
           </button>
           <button
-            onClick={() => handleMedicineDelete(data?._id)}
+            onClick={() => handleCustomerDelete(data?._id)}
             className="w-full hover:bg-gray-100 hover:rounded-md hover:text-red-400 py-2 flex justify-center items-center transition-all duration-300"
-            title="Delete medicine from store"
+            title="Delete customer"
           >
-            <RiDeleteBin6Line className="text-2xl" />
+            <RiDeleteBin6Line className="text-xl" />
           </button>
         </div>
       </div>
@@ -76,4 +65,4 @@ const MedicineCard = ({ data, handleMedicineDelete, setReloadData }) => {
   );
 };
 
-export default MedicineCard;
+export default CustomerCard;

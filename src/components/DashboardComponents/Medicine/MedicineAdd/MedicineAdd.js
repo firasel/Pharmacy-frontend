@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   RiAddCircleFill,
   RiLayoutGridFill,
@@ -93,7 +93,7 @@ const MedicineAdd = () => {
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
             bgStyle={"bg-black/60 !items-start min-h-[99vh] h-full z-[1]"}
-            style={"max-w-xl !mt-14 md:mt- mx-3 sm:mx-6 mb-8"}
+            style={"max-w-xl mt-14 md:mt-32 mx-3 sm:mx-6 mb-8"}
           >
             <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>
             <MedicineAddForm

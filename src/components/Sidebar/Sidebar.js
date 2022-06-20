@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
   AiOutlineFileText,
@@ -9,7 +10,7 @@ import {
 } from "react-icons/ai";
 import { BsGraphUp } from "react-icons/bs";
 import { FaCapsules } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiUsers } from "react-icons/fi";
 import { useRecoilState } from "recoil";
 import logoImg from "../../assets/icons/logo.svg";
 import { sidebarState } from "../../atoms/sidebarAtom";
@@ -18,10 +19,11 @@ import style from "./Sidebar.module.scss";
 import SidebarItems from "./SidebarItems";
 
 const Sidebar = () => {
-  const [expandKey, setExpandKey] = useState(1);
+  const [expandKey, setExpandKey] = useState(0);
   const [activeItem, setActiveItem] = useState(0);
   const [subMenuActive, setSubMenuActive] = useState(0);
   const [sidebarExpand, setSidebarExpand] = useRecoilState(sidebarState);
+  const router = useRouter();
 
   const sidebarData = [
     {
@@ -60,6 +62,13 @@ const Sidebar = () => {
       subMenu: true,
     },
     {
+      key: 8,
+      icon: <FiUsers />,
+      name: "Customer",
+      path: "/dashboard/customer",
+      subMenu: false,
+    },
+    {
       key: 7,
       icon: <AiOutlineGold />,
       name: "Stock",
@@ -71,7 +80,7 @@ const Sidebar = () => {
         },
         {
           key: 7,
-          name: "Edit Stock",
+          name: "Manage Stock",
           path: "/dashboard/stock/edit",
         },
       ],
@@ -108,9 +117,30 @@ const Sidebar = () => {
       subMenu: false,
     },
   ];
+
+  useEffect(() => {
+    for (const item of sidebarData) {
+      if (item?.subMenu) {
+        for (const subItem of item?.subMenuData) {
+          if (subItem?.path === router?.asPath) {
+            setActiveItem(subItem?.key);
+            setExpandKey(item?.key);
+            setSubMenuActive(item?.key);
+          }
+        }
+      } else {
+        if (item?.path === router?.asPath) {
+          setActiveItem(0);
+          setSubMenuActive(0);
+          setExpandKey(item?.key);
+        }
+      }
+    }
+  }, []);
+
   const sidebarVariants = {
     default: {
-      width: "14rem",
+      width: "16rem",
       transition: {
         duration: 0.2,
         type: "spring",
