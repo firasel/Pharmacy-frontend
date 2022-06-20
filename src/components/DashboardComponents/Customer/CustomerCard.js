@@ -2,9 +2,9 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { RiDeleteBin6Line, RiEdit2Line } from "react-icons/ri";
 import Modal from "../../../SharedComponents/Modal/Modal";
-import MedicineAddForm from "./CustomerAddForm";
+import CustomerEditForm from "./CustomerEditForm";
 
-const CustomerCard = ({ data, handleCustomerDelete }) => {
+const CustomerCard = ({ data, handleCustomerDelete, setReloadData }) => {
   // React useState is used to control each modal
   const [modalOpen, setModalOpen] = useState(false);
   // Scroll top function
@@ -22,9 +22,10 @@ const CustomerCard = ({ data, handleCustomerDelete }) => {
             bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
             style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
           >
-            <h2 className="text-2xl py-5 px-2 text-center">Medicine Add</h2>
-            <MedicineAddForm
+            <h2 className="text-2xl py-5 px-2 text-center">Edit Customer</h2>
+            <CustomerEditForm
               handleClose={() => setModalOpen(false)}
+              setReloadData={setReloadData}
               data={data}
             />
           </Modal>

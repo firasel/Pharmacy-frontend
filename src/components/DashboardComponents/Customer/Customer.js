@@ -134,6 +134,7 @@ const Customer = () => {
                 <CustomerCard
                   data={data}
                   handleCustomerDelete={handleCustomerDelete}
+                  setReloadData={setReloadData}
                   key={index}
                 />
               ))}
@@ -162,6 +163,7 @@ const Customer = () => {
                       <CustomerList
                         data={data}
                         handleCustomerDelete={handleCustomerDelete}
+                        setReloadData={setReloadData}
                         key={index}
                       />
                     ))}
