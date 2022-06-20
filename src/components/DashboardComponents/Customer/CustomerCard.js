@@ -20,7 +20,7 @@ const CustomerCard = ({ data, handleCustomerDelete, setReloadData }) => {
             handleClose={() => setModalOpen(false)}
             type={"dropIn"}
             bgStyle={"bg-black/60 min-h-[99vh] !items-start z-[1]"}
-            style={"max-w-xl !mt-14 mx-3 sm:mx-6"}
+            style={"max-w-xl mt-14 md:mt-32 mx-3 sm:mx-6"}
           >
             <h2 className="text-2xl py-5 px-2 text-center">Edit Customer</h2>
             <CustomerEditForm

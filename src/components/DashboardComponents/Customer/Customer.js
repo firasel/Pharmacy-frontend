@@ -17,7 +17,7 @@ const Customer = () => {
   const [btnDisable, setBtnDisable] = useState(false);
   const [reloadData, setReloadData] = useState(false);
 
-  // Load medicine data from api
+  // Load customer data from api
   useEffect(() => {
     API.get("/store/customer/get", { withCredentials: true })
       .then((res) => {
@@ -32,6 +32,7 @@ const Customer = () => {
     API.delete(`/store/customer/delete/${id}`)
       .then((res) => {
         if (res?.data?.status) {
+          setReloadData(!reloadData);
           SuccessToast("Customer deleted successfully");
         }
       })
