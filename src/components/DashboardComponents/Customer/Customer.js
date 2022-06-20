@@ -19,9 +19,9 @@ const Customer = () => {
 
   // Load customer data from api
   useEffect(() => {
-    API.get("/store/customer/get", { withCredentials: true })
+    API.get("/store/customer/get?page=1&limit=20", { withCredentials: true })
       .then((res) => {
-        if (res.status === 201 && res?.data?.data) {
+        if (res?.data?.status && res?.data?.data) {
           setCustomerData(res?.data?.data);
         }
       })
