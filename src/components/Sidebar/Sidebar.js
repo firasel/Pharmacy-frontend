@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import {
   AiOutlineFileText,
   AiOutlineGold,
-  AiOutlineHome,
-  AiOutlineUser
+  AiOutlineHome, AiOutlineShoppingCart, AiOutlineUser
 } from "react-icons/ai";
 import { BsGraphUp } from "react-icons/bs";
 import { FaCapsules } from "react-icons/fa";
@@ -60,6 +59,13 @@ const Sidebar = () => {
         },
       ],
       subMenu: true,
+    },
+    {
+      key: 9,
+      icon: <AiOutlineShoppingCart />,
+      name: "Sell",
+      path: "/dashboard/sell",
+      subMenu: false,
     },
     {
       key: 8,
