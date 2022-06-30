@@ -92,8 +92,6 @@ const StockAdd = () => {
             {medicineData?.map((data, index) => (
               <MedicineCard
                 data={data}
-                // handleMedicineDelete={handleMedicineDelete}
-                // setReloadData={setReloadData}
                 key={index}
               />
             ))}
@@ -125,8 +123,6 @@ const StockAdd = () => {
                   {medicineData.map((data, index) => (
                     <MedicineList
                       data={data}
-                      // handleMedicineDelete={handleMedicineDelete}
-                      // setReloadData={setReloadData}
                       key={index}
                     />
                   ))}
