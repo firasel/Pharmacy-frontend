@@ -29,9 +29,22 @@ const SellAdd = () => {
         0 ||
       !addCart
     ) {
-      setAddCart([...addCart, data]);
+      setAddCart((prevData) => [...prevData, data]);
     }
   };
+
+  const modifyCartProduct = () => {
+    return addCart.map((data) => {
+      return {
+        stock_id: data?._id,
+        product_id: data?.medicine_id?._id,
+        name: data?.medicine_id?.name,
+        quantity: data?.quantity,
+      };
+    });
+  };
+
+  console.log("Modify: ", modifyCartProduct());
 
   return (
     <>

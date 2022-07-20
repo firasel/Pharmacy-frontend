@@ -1,78 +1,119 @@
+import { useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useRecoilState } from "recoil";
-import { addMedicineState } from "../../../../atoms/medicineAtom";
+import { addCartState } from "../../../../atoms/cartAtom";
 
 const SelectedMedicineRow = ({ data }) => {
-  const [medicines, setMedicines] = useRecoilState(addMedicineState);
+  const [addCart, setAddCart] = useRecoilState(addCartState);
+  const [qtyBox, setQtyBox] = useState(0);
+  const [qtyPacket, setQtyPacket] = useState(0);
+  const [qty, setQty] = useState(0);
 
-  const handleShelf = (e, id, key) => {
-    const editData = medicines.map((medicineData) => {
-      if (medicineData.ref_id == id) {
+  const handleQty = (e, id, key) => {
+    const editData = addCart.map((medicineData) => {
+      if (medicineData.medicine_id._id == id) {
         let changedObject = { ...medicineData };
         switch (key) {
-          case "QtyOfPacket":
-            changedObject.qtyOfPacket = e?.target?.value;
+          case "QtyBox":
+            {
+              let value = parseInt(e?.target?.value);
+              let totalBoxQty =
+                value *
+                data?.medicine_id?.qtyOfPacket *
+                data?.medicine_id?.qtyOfMedicine;
+              let totalPacketQty = qtyPacket * data?.medicine_id?.qtyOfMedicine;
+              let totalQty = totalBoxQty + totalPacketQty;
+              if (value >= 0 && totalQty <= data?.stock) {
+                setQtyBox(value);
+                setQty(totalQty);
+              }
+            }
             break;
-          case "QtyOfMedicine":
-            changedObject.qtyOfMedicine = e?.target?.value;
+          case "QtyPacket":
+            {
+              let value = parseInt(e?.target?.value);
+              let totalBoxQty =
+                qtyBox *
+                data?.medicine_id?.qtyOfPacket *
+                data?.medicine_id?.qtyOfMedicine;
+              let totalPacketQty = value * data?.medicine_id?.qtyOfMedicine;
+              let totalQty = totalBoxQty + totalPacketQty;
+              if (value >= 0 && totalQty <= data?.stock) {
+                setQtyPacket(value);
+                setQty(totalQty);
+              }
+            }
             break;
-          case "MedicineShelf":
-            changedObject.medicineShelf = e?.target?.value;
+          case "Qty":
+            {
+              let value = parseInt(e?.target?.value);
+              if (value >= 0 && value <= data?.stock) {
+                setQty(value);
+              }
+            }
             break;
         }
+        changedObject.quantity = qty;
         return changedObject;
       }
       return medicineData;
     });
-    setMedicines(editData);
+    setAddCart(editData);
   };
 
   // Handle selected medicine item delete
   const handleItemDelete = (id) => {
-    const filterData = medicines.filter((data) => data.ref_id !== id);
-    setMedicines(filterData);
+    const filterData = addCart.filter((data) => data._id !== id);
+    setAddCart(filterData);
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-between gap-0 md:gap-2 font-[Lato] px-2 py-2 border-b-[1px] border-gray-300 hover:bg-gray-200 transition-all duration-200 text-sm lg:text-base">
-      <div className="py-[2px] lg:py-2">{data.name}</div>
-      <div className="py-[2px] lg:py-2">{data.genericName}</div>
-      <div className="py-[2px] lg:py-2">{data.dosage}</div>
-      <div className="py-[2px] lg:py-2">{data.strength}</div>
-      <div className="pt-[2px] pb-2 lg:py-2">{data.manufacturer}</div>
-      <div className="col-span-full md:col-span-3 lg:col-span-2 flex gap-2 justify-between items-center relative">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 justify-between gap-1 md:gap-2 font-[Lato] px-2 py-2 border-b-[1px] border-gray-300 hover:bg-gray-200 transition-all duration-200 text-sm lg:text-base">
+      <div className="py-[4px] lg:py-2">{data?.medicine_id?.name}</div>
+      <div className="py-[4px] lg:py-2">{data?.medicine_id?.dosage}</div>
+      <div className="py-[4px] lg:py-2">{data?.medicine_id?.strength}</div>
+      <div className="py-[4px] lg:py-2">{data?.sellingPrice}</div>
+      <div className="py-[4px] lg:py-2">
+        <input
+          className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
+          type="number"
+          min={0}
+          value={qtyBox}
+          onChange={(e) => handleQty(e, data?.medicine_id?._id, "QtyBox")}
+          title="Number of box"
+        />
+      </div>
+      <div className="py-[3px] lg:py-2">
+        <input
+          className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
+          type="number"
+          min={0}
+          value={qtyPacket}
+          onChange={(e) => handleQty(e, data?.medicine_id?._id, "QtyPacket")}
+          title="Number of packet"
+        />
+      </div>
+      <div className="py-[3px] lg:py-2">
+        <input
+          className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
+          type="number"
+          min={0}
+          value={qty}
+          onChange={(e) => handleQty(e, data?.medicine_id?._id, "Qty")}
+          title="Total quantity"
+        />
+      </div>
+      <div className="flex justify-between h-min py-[3px] lg:py-2">
         <div>
           <input
-            className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
-            type="number"
-            min={1}
-            value={data?.qtyOfPacket}
-            onChange={(e) => handleShelf(e, data?.ref_id, "QtyOfPacket")}
-            title="Number of packets in a box"
-          />
-        </div>
-        <div>
-          <input
-            className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
-            type="number"
-            min={1}
-            value={data?.qtyOfMedicine}
-            onChange={(e) => handleShelf(e, data?.ref_id, "QtyOfMedicine")}
-            title="Number of medicines in a packet"
-          />
-        </div>
-        <div className="">
-          <input
-            className="py-2 bg-slate-100 w-full px-2 rounded outline-sky-300 text-center"
-            type="text"
-            value={data?.medicineShelf}
-            onChange={(e) => handleShelf(e, data?.ref_id, "MedicineShelf")}
-            placeholder="Shelf"
-            title="Medicine Shelf"
+            className="py-2 bg-transparent w-full px-2 outline-none text-center cursor-pointer"
+            value={data?.sellingPrice * qty}
+            title="Total quantity"
+            readOnly
           />
         </div>
         <div
-          onClick={() => handleItemDelete(data?.ref_id)}
+          onClick={() => handleItemDelete(data?._id)}
           className="p-2 bg-red-100 rounded cursor-pointer hover:text-red-600 hover:bg-slate-100 transition-all duration-200"
         >
           <RiDeleteBin6Line size={22} />
